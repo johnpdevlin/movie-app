@@ -1,0 +1,30 @@
+# Ignore dependencies installed in the root
+node_modules/
+
+# Ignore frontend build artifacts
+client/build/
+client/node_modules/
+
+# Ignore backend build artifacts
+server/build/
+server/node_modules/
+
+# Ignore environment-specific files
+.env
+.env.local
+
+# Ignore editor/IDE-specific files (customize based on your IDE)
+.idea/
+.vscode/
+
+# Ignore log files
+*.log
+
+# Ignore OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
