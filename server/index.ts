@@ -5,8 +5,11 @@ import express, { Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import rateLimit from 'express-rate-limit';
 import { MovieDetails, MovieInfo } from './types/movie';
+import dotenv from 'dotenv';
 
-const port = 8000;
+dotenv.config();
+
+const port = process.env.PORT || 8000;
 const app = express();
 
 const cache = new NodeCache({ stdTTL: 600 }); // Cache results for 10 minutes
@@ -28,8 +31,7 @@ app.use(express.json());
 app.use('/search/:title', searchRateLimiter);
 app.use('/movie/:movieId', moviesRateLimiter);
 
-const apiKey =
-	'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OTk1ZGE4NTQ3NGM0MjY0ZjU0MjRlMjlkN2JkOGY4NSIsInN1YiI6IjY0ZjMzY2NlM2Q0M2UwMDBmZTI3NGVmZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lLzleyQ8W6nh1dhUJsDkCDh4PP2Ng2udBgU93PDesbA';
+const apiKey = process.env.TMDB_API_KEY;
 
 const options = {
 	headers: {

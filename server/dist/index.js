@@ -17,7 +17,9 @@ const axios_1 = __importDefault(require("axios"));
 const express_1 = __importDefault(require("express"));
 const node_cache_1 = __importDefault(require("node-cache"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
-const port = 8000;
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const port = process.env.PORT || 8000;
 const app = (0, express_1.default)();
 const cache = new node_cache_1.default({ stdTTL: 600 }); // Cache results for 10 minutes
 // Define rate limits for different routes
@@ -33,7 +35,7 @@ app.use(express_1.default.json());
 // Apply rate limiters to specific routes
 app.use('/search/:title', searchRateLimiter);
 app.use('/movie/:movieId', moviesRateLimiter);
-const apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3OTk1ZGE4NTQ3NGM0MjY0ZjU0MjRlMjlkN2JkOGY4NSIsInN1YiI6IjY0ZjMzY2NlM2Q0M2UwMDBmZTI3NGVmZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lLzleyQ8W6nh1dhUJsDkCDh4PP2Ng2udBgU93PDesbA';
+const apiKey = process.env.TMDB_API_KEY;
 const options = {
     headers: {
         accept: 'application/json',
