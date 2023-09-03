@@ -1,15 +1,16 @@
 /** @format */
 
 import axios from 'axios';
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import NodeCache from 'node-cache';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
 
 dotenv.config();
 
 const port = process.env.PORT || 8000;
-const app = express();
+export const app = express();
 
 const cache = new NodeCache({ stdTTL: 600 }); // Cache results for 10 minutes
 
@@ -25,6 +26,7 @@ const moviesRateLimiter = rateLimit({
 });
 
 app.use(express.json());
+app.use(helmet()); // security headers
 
 // Apply rate limiters to specific routes
 app.use('/search/:title', searchRateLimiter);
@@ -38,6 +40,15 @@ const options = {
 		Authorization: `Bearer ${apiKey}`,
 	},
 };
+
+// Error handling middleware for rate limiting
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+	if (err.name === 'RateLimitError') {
+		// Rate limit exceeded, return 429 status
+		return res.status(429).json({ error: 'Rate limit exceeded' });
+	}
+	next(err);
+});
 
 // Gets movies with similar titles
 app.get('/search/:title', async (req: Request, res: Response) => {
@@ -53,7 +64,7 @@ app.get('/search/:title', async (req: Request, res: Response) => {
 		// Check cache first
 		const cachedResult = cache.get(cacheKey);
 		if (cachedResult) {
-			res.status(200).json(cachedResult as JSON[]);
+			return res.status(200).json(cachedResult as JSON[]);
 		}
 
 		cache.set(cacheKey, response.data);
@@ -77,7 +88,7 @@ app.get('/movie/:movieId', async (req: Request, res: Response) => {
 		// Check cache first
 		const cachedResult: JSON | undefined = cache.get(cacheKey);
 		if (cachedResult) {
-			res.status(200).json(cachedResult as JSON);
+			return res.status(200).json(cachedResult as JSON);
 		}
 
 		cache.set(cacheKey, response.data);
