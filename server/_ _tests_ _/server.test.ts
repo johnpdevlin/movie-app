@@ -5,7 +5,7 @@ import request from 'supertest';
 
 describe('Movie API Tests', () => {
 	it('should return a list of movies when searching by title', async () => {
-		const response = await request(app).get('/search/inception');
+		const response = await request(app).get('/search/horse');
 		expect(response.status).toBe(200);
 
 		// Check that the response body matches the MovieInfo type
