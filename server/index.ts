@@ -4,7 +4,6 @@ import axios from 'axios';
 import express, { Request, Response } from 'express';
 import NodeCache from 'node-cache';
 import rateLimit from 'express-rate-limit';
-import { MovieDetails, MovieInfo } from './types/movie';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -17,12 +16,12 @@ const cache = new NodeCache({ stdTTL: 600 }); // Cache results for 10 minutes
 // Define rate limits for different routes
 const searchRateLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 50, // Limit to 50 requests per IP for /search route
+	max: 75, // Limit to 50 requests per IP for /search route
 });
 
 const moviesRateLimiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100, // Limit to 100 requests per IP for /movies route
+	max: 150, // Limit to 100 requests per IP for /movies route
 });
 
 app.use(express.json());
@@ -54,13 +53,12 @@ app.get('/search/:title', async (req: Request, res: Response) => {
 		// Check cache first
 		const cachedResult = cache.get(cacheKey);
 		if (cachedResult) {
-			return res.json(cachedResult as MovieInfo[]);
+			res.status(200).json(cachedResult as JSON[]);
 		}
 
-		cache.set(cacheKey, response.data.results);
-		res.json(response.data.results);
+		cache.set(cacheKey, response.data);
+		res.status(200).json(response.data);
 	} catch (error) {
-		console.error('Error fetching search results:', error);
 		res
 			.status(500)
 			.json({ error: `Error fetching search results for ${title}` });
@@ -77,15 +75,14 @@ app.get('/movie/:movieId', async (req: Request, res: Response) => {
 		const response = await axios.get(url, options);
 
 		// Check cache first
-		const cachedResult: MovieDetails | undefined = cache.get(cacheKey);
+		const cachedResult: JSON | undefined = cache.get(cacheKey);
 		if (cachedResult) {
-			return res.json(cachedResult as MovieDetails);
+			res.status(200).json(cachedResult as JSON);
 		}
 
 		cache.set(cacheKey, response.data);
-		res.json(response.data);
+		res.status(200).json(response.data);
 	} catch (error) {
-		console.error(`Error fetching movie details for: ${movieId} `, error);
 		res.status(500).json({
 			error: `Incorrect MovieId (${movieId}) submitted or server error.`,
 		});
