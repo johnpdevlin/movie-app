@@ -1,9 +1,11 @@
 /** @format */
+// .eslintrc.ts
+import { Linter } from 'eslint';
 
-export default {
+const config: Linter.Config = {
 	env: {
 		browser: true,
-		es2021: true,
+		esNext: true,
 	},
 	extends: 'standard-with-typescript',
 	overrides: [
@@ -23,3 +25,5 @@ export default {
 	},
 	rules: {},
 };
+
+export default config;
