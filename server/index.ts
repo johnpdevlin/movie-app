@@ -6,11 +6,34 @@ import NodeCache from 'node-cache';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
+import cors from 'cors';
 
 dotenv.config();
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT;
 export const app = express();
+
+// Allow all CORS requests during development
+if (process.env.NODE_ENV === 'development') {
+	app.use(cors());
+} else {
+	const allowedOrigin = process.env.ORIGIN_URL;
+
+	const corsOptions = {
+		origin: (
+			origin: string | undefined,
+			callback: (err: Error | null, allow?: boolean) => void
+		) => {
+			// Check if the origin is in the allowed list
+			if (origin && allowedOrigin && origin === allowedOrigin) {
+				callback(null, true);
+			} else {
+				callback(new Error('Not allowed by CORS'));
+			}
+		},
+	};
+	app.use(cors(corsOptions));
+}
 
 const cache = new NodeCache({ stdTTL: 600 }); // Cache results for 10 minutes
 
