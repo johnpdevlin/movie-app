@@ -52,8 +52,10 @@ app.use(express.json());
 app.use(helmet()); // security headers
 
 // Apply rate limiters to specific routes
-app.use('/search/:title', searchRateLimiter);
-app.use('/movie/:movieId', moviesRateLimiter);
+if (process.env.NODE_ENV !== 'development') {
+	app.use('/search/:title', searchRateLimiter);
+	app.use('/movie/:movieId', moviesRateLimiter);
+}
 
 const apiKey = process.env.TMDB_API_KEY;
 
@@ -121,6 +123,11 @@ app.get('/movie/:movieId', async (req: Request, res: Response) => {
 			error: `Incorrect MovieId (${movieId}) submitted or server error.`,
 		});
 	}
+});
+
+// For checks by render serverless app
+app.get('/healthz', async (req: Request, res: Response) => {
+	res.status(200).json({ status: 'ok' });
 });
 
 app.listen(port, () => {
