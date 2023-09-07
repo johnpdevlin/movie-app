@@ -57,4 +57,4 @@ export type MovieDetails = {
 	video: boolean;
 	vote_average: number;
 	vote_count: number;
-};
+} & Partial<{ release_year: number; profit: number }>;
