@@ -1,8 +1,10 @@
 /** @format */
 
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 import { CSSProperties } from 'react';
+import { formatStringWithColon } from '../utils/format';
 
 const TextOverlayImage = (props: {
 	image: string;
@@ -44,16 +46,22 @@ const TextOverlayImage = (props: {
 		backdropFilter: 'blur(2px)',
 	};
 
-	return (
-		<div style={containerStyle}>
-			<img src={props.image} style={imgStyle} alt={props.altText} />
-			<div style={{ ...overlayStyle, ...overlayBackgroundStyle }}>
-				<Typography variant='h6'>
-					{props.text} <br /> {props.subText}
-				</Typography>
-			</div>
-		</div>
-	);
+	if (props.image) {
+		return (
+			<Box style={containerStyle}>
+				<img
+					src={`https://image.tmdb.org/t/p/w1280/${props.image}`}
+					style={imgStyle}
+					alt={props.altText}
+				/>
+				<div style={{ ...overlayStyle, ...overlayBackgroundStyle }}>
+					<Typography variant='h6' textAlign={'center'}>
+						{formatStringWithColon(props.text)} <br /> {props.subText}
+					</Typography>
+				</div>
+			</Box>
+		);
+	} else return null;
 };
 
 export default TextOverlayImage;
