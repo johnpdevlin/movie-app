@@ -42,26 +42,25 @@ const TextOverlayImage = (props: {
 	};
 
 	const overlayBackgroundStyle: CSSProperties = {
-		backgroundColor: 'rgba(245, 245, 210, 0.65)',
+		backgroundColor: 'black',
+		opacity: '0.65',
 		backdropFilter: 'blur(2px)',
 	};
 
-	if (props.image) {
-		return (
-			<Box style={containerStyle}>
-				<img
-					src={`https://image.tmdb.org/t/p/w1280/${props.image}`}
-					style={imgStyle}
-					alt={props.altText}
-				/>
-				<div style={{ ...overlayStyle, ...overlayBackgroundStyle }}>
-					<Typography variant='h6' textAlign={'center'}>
-						{formatStringWithColon(props.text)} <br /> {props.subText}
-					</Typography>
-				</div>
-			</Box>
-		);
-	} else return null;
+	return (
+		<Box style={containerStyle}>
+			<img
+				src={`https://image.tmdb.org/t/p/w300/${props.image}`}
+				style={imgStyle}
+				alt={props.altText}
+			/>
+			<div style={{ ...overlayStyle, ...overlayBackgroundStyle }}>
+				<Typography variant='h6' textAlign={'center'} color={'whitesmoke'}>
+					{formatStringWithColon(props.text)} <br /> {props.subText}
+				</Typography>
+			</div>
+		</Box>
+	);
 };
 
 export default TextOverlayImage;
