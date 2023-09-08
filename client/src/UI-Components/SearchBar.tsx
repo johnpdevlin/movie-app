@@ -5,6 +5,7 @@ import { styled, alpha } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
@@ -39,11 +40,15 @@ function SearchAppBar(props: {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 }) {
 	const searchTextRef = useRef<HTMLInputElement>(null);
-
+	const navigate = useNavigate();
+	const location = useLocation();
 	const handleSearchSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (searchTextRef.current) {
 			const inputValue = searchTextRef.current.value;
+
+			if (location.pathname !== '/') navigate('/');
+
 			props.setSearchTerm(inputValue);
 		}
 	};
