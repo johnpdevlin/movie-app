@@ -18,8 +18,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import SearchBar from './SearchBar';
-import { useFavoriteMovies } from '../context/favoritesContext';
-import { MovieDetails, MovieInfo } from '../../models/movie';
+import { useFavoriteMovies } from '../context-store/favoritesProvider';
 
 export default function PrimaryAppBar(props: {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
