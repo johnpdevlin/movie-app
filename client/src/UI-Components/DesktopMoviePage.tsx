@@ -22,7 +22,7 @@ import {
 	formatDollarsToCompact,
 } from '../utils/format';
 
-import { MovieDetails } from '../../models/movie';
+import { MovieDetails } from '../models/movie';
 
 function DesktopMoviePage(props: {
 	movie: MovieDetails | undefined;

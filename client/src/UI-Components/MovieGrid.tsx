@@ -4,21 +4,23 @@ import Grid from '@mui/material/Grid';
 import MovieCompact from './MovieCompact';
 import Skeleton from '@mui/material/Skeleton';
 import Pagination from '@mui/material/Pagination';
-import { MovieDetails, MovieInfo } from '../../models/movie';
+import { MovieDetails, MovieInfo } from '../models/movie';
 import Box from '@mui/material/Box';
 
 function MovieGrid(props: {
 	isLoading: Boolean;
 	data: (MovieInfo | MovieDetails)[];
-	page: number;
-	setPage: React.Dispatch<React.SetStateAction<number>>;
-	pageCount: number;
+	page?: number;
+	setPage?: React.Dispatch<React.SetStateAction<number>>;
+	pageCount?: number;
 }) {
 	function handlePageChange(
 		_event: React.ChangeEvent<unknown>,
 		page: number
 	): void {
-		props.setPage(page);
+		if (props.setPage !== undefined) {
+			props.setPage(page);
+		}
 	}
 	return (
 		<>
@@ -54,24 +56,26 @@ function MovieGrid(props: {
 						})}
 					</Grid>
 
-					<Box
-						sx={{
-							textAlign: 'center',
-							display: 'flex',
-							justifyContent: 'center',
-							m: 5,
-						}}>
-						{props.isLoading ? (
-							<Skeleton variant='text' />
-						) : (
-							<Pagination
-								page={props.page}
-								count={props.pageCount}
-								color='secondary'
-								onChange={handlePageChange}
-							/>
-						)}
-					</Box>
+					{props.page ? (
+						<Box
+							sx={{
+								textAlign: 'center',
+								display: 'flex',
+								justifyContent: 'center',
+								m: 5,
+							}}>
+							{props.isLoading ? (
+								<Skeleton variant='text' />
+							) : (
+								<Pagination
+									page={props.page}
+									count={props.pageCount}
+									color='secondary'
+									onChange={handlePageChange}
+								/>
+							)}
+						</Box>
+					) : null}
 				</>
 			)}
 		</>

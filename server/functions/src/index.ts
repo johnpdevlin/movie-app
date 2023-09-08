@@ -1,44 +1,38 @@
 /** @format */
 
+import * as functions from 'firebase-functions';
 import axios from 'axios';
-import express, { Request, Response, NextFunction } from 'express';
-import NodeCache from 'node-cache';
+import * as express from 'express';
+import { Request, Response, NextFunction } from 'express';
+import * as NodeCache from 'node-cache';
 import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
-import helmet from 'helmet';
-import cors from 'cors';
-import {
-	RequestParam,
-	RequestParams,
-	formatQueryParam,
-} from './functions/src/formatParams';
+import * as dotenv from 'dotenv';
+import * as cors from 'cors';
+import { RequestParam, RequestParams, formatQueryParam } from './formatParams';
 
 dotenv.config();
 
-const port = process.env.PORT;
+const port = process.env.SERVER_PORT;
 export const app = express();
 
-// Allow all CORS requests during development
-if (process.env.NODE_ENV === 'development') {
-	app.use(cors());
-} else {
-	const allowedOrigin = process.env.ORIGIN_URL;
+app.use(cors());
 
-	const corsOptions = {
-		origin: (
-			origin: string | undefined,
-			callback: (err: Error | null, allow?: boolean) => void
-		) => {
-			// Check if the origin is in the allowed list
-			if (origin && allowedOrigin && origin === allowedOrigin) {
-				callback(null, true);
-			} else {
-				callback(new Error('Not allowed by CORS'));
-			}
-		},
-	};
-	app.use(cors(corsOptions));
-}
+const allowedOrigin = process.env.ORIGIN_URL;
+
+const corsOptions = {
+	origin: (
+		origin: string | undefined,
+		callback: (err: Error | null, allow?: boolean) => void
+	) => {
+		// Check if the origin is in the allowed list
+		if (origin && allowedOrigin && origin === allowedOrigin) {
+			callback(null, true);
+		} else {
+			callback(new Error(`Not allowed by CORS: ${origin} ${allowedOrigin}`));
+		}
+	},
+};
+app.use(cors(corsOptions));
 
 const cache = new NodeCache({ stdTTL: 600 }); // Cache results for 10 minutes
 
@@ -54,7 +48,6 @@ const moviesRateLimiter = rateLimit({
 });
 
 app.use(express.json());
-app.use(helmet()); // security headers
 
 // Apply rate limiters to specific routes
 if (process.env.NODE_ENV !== 'development') {
@@ -78,6 +71,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 		return res.status(429).json({ error: 'Rate limit exceeded' });
 	}
 	next(err);
+	return;
 });
 
 // Gets movies with similar titles
@@ -102,9 +96,9 @@ app.get('/search/:title', async (req: Request, res: Response) => {
 		}
 
 		cache.set(cacheKey, response.data);
-		res.status(200).json(response.data);
+		return res.status(200).json(response.data);
 	} catch (error) {
-		res
+		return res
 			.status(500)
 			.json({ error: `Error fetching search results for ${title}` });
 	}
@@ -138,9 +132,9 @@ app.get('/discover/', async (req, res) => {
 		}
 
 		cache.set(cacheKey, response.data);
-		res.status(200).json(response.data);
+		return res.status(200).json(response.data);
 	} catch (error) {
-		res
+		return res
 			.status(500)
 			.json({ error: `Error fetching search results for ${queryString}` });
 	}
@@ -162,9 +156,9 @@ app.get('/movie/:movieId', async (req: Request, res: Response) => {
 		}
 
 		cache.set(cacheKey, response.data);
-		res.status(200).json(response.data);
+		return res.status(200).json(response.data);
 	} catch (error) {
-		res.status(500).json({
+		return res.status(500).json({
 			error: `Incorrect MovieId (${movieId}) submitted or server error.`,
 		});
 	}
@@ -178,3 +172,5 @@ app.get('/healthz', async (req: Request, res: Response) => {
 app.listen(port, () => {
 	console.log(`Server running on port ${port}.`);
 });
+
+export const api = functions.https.onRequest(app);

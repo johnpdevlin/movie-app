@@ -1,8 +1,8 @@
 /** @format */
 
 import { createContext, useContext, ReactNode } from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage'; // Import your useLocalStorage hook
-import { MovieDetails } from '../../models/movie'; // Import your MovieDetails model
+import useLocalStorage from '../hooks/useLocalStorage'; // Import useLocalStorage hook
+import { MovieDetails } from '../models/movie'; // Import MovieDetails model
 
 // Create a context
 type FavoriteMoviesContextType = {

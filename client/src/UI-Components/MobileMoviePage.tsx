@@ -21,7 +21,7 @@ import {
 	formatMinutesToHoursAndMinutes,
 	formatDollarsToCompact,
 } from '../utils/format';
-import { MovieDetails } from '../../models/movie';
+import { MovieDetails } from '../models/movie';
 import { formatStringWithColon } from '../utils/format';
 
 function MobileMoviePage(props: {
@@ -116,7 +116,7 @@ function MobileMoviePage(props: {
 										<BusinessIcon fontSize='small' />
 									</Tooltip>
 									{movie?.production_companies.map((comp, index) => (
-										<span key={comp.id}>
+										<span key={index}>
 											{index > 0 && ', '}
 											{comp.name}
 										</span>

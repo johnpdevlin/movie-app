@@ -4,8 +4,7 @@
 		"skipLibCheck": true,
 		"module": "ESNext",
 		"moduleResolution": "bundler",
-		"allowSyntheticDefaultImports": true,
-		"types": ["node", "@types/testing-library__jest-dom"]
+		"allowSyntheticDefaultImports": true
 	},
-	"include": ["vite.config.ts"]
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "vite.config.ts"]
 }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import AppBar from './UI-Components/AppBar';
 import MovieGrid from './UI-Components/MovieGrid';
-import { MovieDetails, MovieInfo } from '../models/movie';
+import { MovieDetails, MovieInfo } from './models/movie';
 import axios from 'axios';
 import MoviePage from './UI-Components/MoviePage';
 import FavoritesPage from './UI-Components/FavoritesPage';
@@ -22,7 +22,9 @@ function App() {
 			setIsLoading(true);
 
 			axios
-				.get(`http://localhost:8000/search/${searchTerm}&page=${page}`)
+				.get(
+					`https://us-central1-movie-app-server-222.cloudfunctions.net/api/search/${searchTerm}&page=${page}`
+				)
 
 				.then((res) => {
 					const filteredData = res.data.results.filter(
