@@ -17,23 +17,38 @@ import BusinessIcon from '@mui/icons-material/Business';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LanguageIcon from '@mui/icons-material/Language';
 import MovieRating from './MovieRating';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import BookmarkAddOutlinedIcon from '@mui/icons-material/BookmarkAddOutlined';
 import Tooltip from '@mui/material/Tooltip';
 import {
 	formatMinutesToHoursAndMinutes,
 	formatDollarsToCompact,
-} from '../../../utils/format';
+} from '../utils/format';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { MovieDetails } from '../../models/movie';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useFavoriteMovies } from '../context/favoritesContext';
+
 const MoviePage = () => {
 	const { id } = useParams();
-	const navigate = useNavigate();
+
 	const [isLoading, setIsLoading] = useState<Boolean>(true);
 	const [movie, setMovie] = useState<MovieDetails>();
+	const { favoriteMovies, addFavoriteMovie, removeFavoriteMovie } =
+		useFavoriteMovies();
+
+	const isFavorite = favoriteMovies.some(
+		(favMovie) => favMovie.id === movie?.id
+	);
+
+	const toggleFavorite = () => {
+		if (isFavorite) {
+			removeFavoriteMovie(movie!.id);
+		} else {
+			addFavoriteMovie(movie!);
+		}
+	};
 
 	useEffect(() => {
 		console.log('hello');
@@ -61,15 +76,17 @@ const MoviePage = () => {
 						overflow: 'hidden',
 						width: '100%',
 						height: '100vh',
-						backgroundImage: `url('https://image.tmdb.org/t/p/w300/${movie?.backdrop_path}')`,
+						backgroundImage: `url('https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}')`,
+
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
-						opacity: 0.8,
+						opacity: 0.7,
 						display: 'flex',
 						justifyContent: 'center',
 						alignItems: 'center',
 						textAlign: 'center',
 						color: 'white',
+						backgroundColor: 'black',
 					}}>
 					<Stack direction={'column'}>
 						<Card sx={{ display: 'flex', maxWidth: '900px' }}>
@@ -99,8 +116,11 @@ const MoviePage = () => {
 											</Typography>
 										</Stack>
 										<Stack direction={'row'} spacing={1} margin={2}>
-											<BookmarkAddOutlinedIcon />
-											<FavoriteBorderIcon />
+											{isFavorite ? (
+												<FavoriteIcon onClick={toggleFavorite} />
+											) : (
+												<FavoriteBorderIcon onClick={toggleFavorite} />
+											)}
 										</Stack>
 									</Stack>
 									{movie?.vote_average ? (
