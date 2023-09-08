@@ -1,7 +1,7 @@
 /** @format */
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,15 +15,19 @@ import Menu from '@mui/material/Menu';
 
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import WatchLaterIcon from '@mui/icons-material/WatchLater';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import SearchBar from './SearchBar';
+import { useFavoriteMovies } from '../context/favoritesContext';
+import { MovieDetails, MovieInfo } from '../../models/movie';
 
 export default function PrimaryAppBar(props: {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 }) {
 	const navigate = useNavigate();
+
+	const { getFavoritesCount } = useFavoriteMovies();
+	const favoritesCount = getFavoritesCount();
 
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
 		useState<null | HTMLElement>(null);
@@ -59,21 +63,10 @@ export default function PrimaryAppBar(props: {
 					size='large'
 					aria-label='watch later icon and count'
 					color='inherit'>
-					<Badge badgeContent={17} color='error'>
+					<Badge badgeContent={favoritesCount} color='error'>
 						<FavoriteIcon />
 					</Badge>
 				</IconButton>
-			</MenuItem>
-			<MenuItem>
-				<IconButton
-					size='large'
-					aria-label='watch later icon and count'
-					color='inherit'>
-					<Badge badgeContent={17} color='error'>
-						<WatchLaterIcon />
-					</Badge>
-				</IconButton>
-				<p>Watch Later</p>
 			</MenuItem>
 		</Menu>
 	);
@@ -89,31 +82,25 @@ export default function PrimaryAppBar(props: {
 						onClick={() => navigate('..')}>
 						<ArrowBackIcon />
 					</IconButton>
-					<Typography
-						variant='h6'
-						noWrap
-						component='div'
-						sx={{ display: { xs: 'none', sm: 'block' } }}>
-						Movie App
-					</Typography>
+					<Link to='/' style={{ textDecoration: 'none' }}>
+						<Typography
+							variant='h6'
+							noWrap
+							component='div'
+							sx={{ display: { xs: 'none', sm: 'block' } }}>
+							Movie App
+						</Typography>
+					</Link>
 					<SearchBar setSearchTerm={props.setSearchTerm} />
 					<Box sx={{ flexGrow: 1 }} />
 					<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 						<IconButton
+							onClick={() => navigate('/favorites')}
 							size='large'
 							aria-label='watch later icon and count'
 							color='inherit'>
-							<Badge badgeContent={17} color='error'>
+							<Badge badgeContent={favoritesCount} color='error'>
 								<FavoriteIcon />
-							</Badge>
-						</IconButton>
-
-						<IconButton
-							size='large'
-							aria-label='watch later icon and count'
-							color='inherit'>
-							<Badge badgeContent={17} color='error'>
-								<WatchLaterIcon />
 							</Badge>
 						</IconButton>
 					</Box>
