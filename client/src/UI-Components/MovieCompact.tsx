@@ -24,13 +24,13 @@ const MovieCompact = (props: {
 	if (props.poster!) {
 		return (
 			<>
-				<Box key={props.id}>
+				<Box key={props.id} minHeight={'100%'}>
 					<Link to={`/${props.id}/`}>
 						<Paper elevation={24} ref={paperRef}>
 							<TextOverlayImage
 								image={`${props.poster}`}
 								text={props.title}
-								subText={releaseYear}
+								subText={`(${releaseYear})`}
 								borderRadius={paperBorderRadius}
 							/>
 						</Paper>
