@@ -71,52 +71,54 @@ export default function PrimaryAppBar(props: {
 	);
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position='static'>
-				<Toolbar>
-					<IconButton
-						size='large'
-						aria-label='Back Icon'
-						color='inherit'
-						onClick={() => navigate('..')}>
-						<ArrowBackIcon />
-					</IconButton>
-					<Link to='/' style={{ textDecoration: 'none' }}>
-						<Typography
-							variant='h6'
-							noWrap
-							component='div'
-							sx={{ display: { xs: 'none', sm: 'block' } }}>
-							Movie App
-						</Typography>
-					</Link>
-					<SearchBar setSearchTerm={props.setSearchTerm} />
-					<Box sx={{ flexGrow: 1 }} />
-					<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-						<IconButton
-							onClick={() => navigate('/favorites')}
-							size='large'
-							aria-label='watch later icon and count'
-							color='inherit'>
-							<Badge badgeContent={favoritesCount} color='error'>
-								<FavoriteIcon />
-							</Badge>
-						</IconButton>
-					</Box>
-					<Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+		<header>
+			<Box sx={{ flexGrow: 1 }}>
+				<AppBar position='static'>
+					<Toolbar>
 						<IconButton
 							size='large'
-							aria-label='show more'
-							aria-controls={mobileMenuId}
-							aria-haspopup='true'
-							onClick={handleMobileMenuOpen}
-							color='inherit'>
-							<MoreIcon />
+							aria-label='Back Icon'
+							color='inherit'
+							onClick={() => navigate('..')}>
+							<ArrowBackIcon />
 						</IconButton>
-					</Box>
-				</Toolbar>
-			</AppBar>
-			{renderMobileMenu}
-		</Box>
+						<Link to='/' style={{ textDecoration: 'none' }}>
+							<Typography
+								variant='h6'
+								noWrap
+								component='div'
+								sx={{ display: { xs: 'none', sm: 'block' } }}>
+								Movie App
+							</Typography>
+						</Link>
+						<SearchBar setSearchTerm={props.setSearchTerm} />
+						<Box sx={{ flexGrow: 1 }} />
+						<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+							<IconButton
+								onClick={() => navigate('/favorites')}
+								size='large'
+								aria-label='watch later icon and count'
+								color='inherit'>
+								<Badge badgeContent={favoritesCount} color='error'>
+									<FavoriteIcon />
+								</Badge>
+							</IconButton>
+						</Box>
+						<Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+							<IconButton
+								size='large'
+								aria-label='show more'
+								aria-controls={mobileMenuId}
+								aria-haspopup='true'
+								onClick={handleMobileMenuOpen}
+								color='inherit'>
+								<MoreIcon />
+							</IconButton>
+						</Box>
+					</Toolbar>
+				</AppBar>
+				{renderMobileMenu}
+			</Box>
+		</header>
 	);
 }

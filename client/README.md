@@ -1,27 +1,87 @@
-# React + TypeScript + Vite
+<!-- @format -->
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Movie App (Client) Readme
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Before you can run the Movie App (Client) application, make sure you have the following prerequisites installed on your system:
 
-## Expanding the ESLint configuration
+- Node.js: Ensure you have Node.js installed.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Getting Started
 
-- Configure the top-level `parserOptions` property like this:
+1. Clone the repository to your local machine:
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+   ```bash
+   git clone <repository-url>
+   ```
+
+2. Change to the client directory:
+
+   ```bash
+   cd client
+   ```
+
+3. Install project dependencies:
+
+   ```bash
+   npm install
+   ```
+
+## Available Scripts
+
+### Testing
+
+To run tests for the Movie App (Client), you can use the following scripts:
+
+- Run tests once:
+
+  ```bash
+  npm test
+  ```
+
+- Run tests in watch mode:
+
+  ```bash
+  npm run test:watch
+  ```
+
+### Development
+
+To start the development server, use the following script:
+
+```bash
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+This will start the development server provided by Vite.
+
+### Building
+
+To build the Movie App (Client) for production, use the following script:
+
+```bash
+npm run build
+```
+
+This command will compile the TypeScript code into JavaScript and create a production build.
+
+### Linting
+
+To lint your TypeScript and TypeScript React files using ESLint, run the following script:
+
+```bash
+npm run lint
+```
+
+This script will check your code for linting issues and report any errors or warnings.
+
+### Preview
+
+To preview the production build of the Movie App (Client), use the following script:
+
+```bash
+npm run preview
+```
+
+This command will serve the production build locally for previewing.

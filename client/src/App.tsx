@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import AppBar from './UI-Components/AppBar';
-import MovieGrid from './UI-Components/MovieGrid';
+import { MovieGrid, MovieGridSkeleton } from './UI-Components/MovieGrid';
 import { MovieDetails, MovieInfo } from './models/movie';
 import axios from 'axios';
 import MoviePage from './UI-Components/MoviePage';
@@ -46,23 +46,28 @@ function App() {
 		<>
 			<FavoriteMoviesProvider>
 				<AppBar setSearchTerm={setSearchTerm} />
-				<Routes>
-					<Route
-						path='/'
-						element={
-							<MovieGrid
-								isLoading={isLoading}
-								data={data}
-								page={page}
-								pageCount={pageCount}
-								setPage={setPage}
-							/>
-						}
-					/>
-					<Route path='/:id' element={<MoviePage />} />
-					<Route path='/favorites' element={<FavoritesPage />} />
-					<Route path='*' element={<Navigate to='/' />} />
-				</Routes>
+				<main>
+					<Routes>
+						<Route
+							path='/'
+							element={
+								isLoading ? (
+									<MovieGridSkeleton />
+								) : (
+									<MovieGrid
+										data={data}
+										page={page}
+										pageCount={pageCount}
+										setPage={setPage}
+									/>
+								)
+							}
+						/>
+						<Route path='/:id' element={<MoviePage />} />
+						<Route path='/favorites' element={<FavoritesPage />} />
+						<Route path='*' element={<Navigate to='/' />} />
+					</Routes>
+				</main>
 			</FavoriteMoviesProvider>
 		</>
 	);

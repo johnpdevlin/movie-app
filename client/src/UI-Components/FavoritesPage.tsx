@@ -5,7 +5,7 @@ import MovieGrid from './MovieGrid';
 function FavoritesPage() {
 	const { favoriteMovies } = useFavoriteMovies();
 
-	return <MovieGrid data={favoriteMovies} isLoading={false} />;
+	return <MovieGrid data={favoriteMovies} />;
 }
 
 export default FavoritesPage;
