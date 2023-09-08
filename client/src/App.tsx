@@ -8,27 +8,29 @@ import axios from 'axios';
 import MoviePage from './UI-Components/MoviePage';
 import FavoritesPage from './UI-Components/FavoritesPage';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { FavoriteMoviesProvider } from './context/favoritesContext';
+import { FavoriteMoviesProvider } from './context-store/favoritesProvider';
 
 function App() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [isLoading, setIsLoading] = useState(true);
 	const [data, setData] = useState<Array<MovieDetails | MovieInfo>>([]);
+	const [page, setPage] = useState<number>(1);
+	const [pageCount, setPageCount] = useState<number>(1);
 
 	useEffect(() => {
 		if (searchTerm !== '') {
 			setIsLoading(true);
 
 			axios
-				.get(`http://localhost:8000/search/${searchTerm}`)
+				.get(`http://localhost:8000/search/${searchTerm}&page=${page}`)
 
 				.then((res) => {
-					console.log(res);
 					const filteredData = res.data.results.filter(
 						(res: MovieInfo) => res.poster_path !== null
 					) as MovieInfo[];
 
 					// Check for duplicates before adding to the data
+					if (page === 1) setPageCount(res.data.total_pages);
 
 					setData(filteredData);
 				})
@@ -36,7 +38,7 @@ function App() {
 					setIsLoading(false);
 				});
 		}
-	}, [searchTerm]);
+	}, [searchTerm, page]);
 
 	return (
 		<>
@@ -45,7 +47,15 @@ function App() {
 				<Routes>
 					<Route
 						path='/'
-						element={<MovieGrid isLoading={isLoading} data={data} />}
+						element={
+							<MovieGrid
+								isLoading={isLoading}
+								data={data}
+								page={page}
+								pageCount={pageCount}
+								setPage={setPage}
+							/>
+						}
 					/>
 					<Route path='/:id' element={<MoviePage />} />
 					<Route path='/favorites' element={<FavoritesPage />} />
