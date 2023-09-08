@@ -7,6 +7,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
+import { RequestParam, RequestParams, formatQueryParam } from './formatParams';
 
 dotenv.config();
 
@@ -14,26 +15,26 @@ const port = process.env.PORT;
 export const app = express();
 
 // Allow all CORS requests during development
-// if (process.env.NODE_ENV === 'development') {
-// 	app.use(cors());
-// } else {
-// 	const allowedOrigin = process.env.ORIGIN_URL;
+if (process.env.NODE_ENV === 'development') {
+	app.use(cors());
+} else {
+	const allowedOrigin = process.env.ORIGIN_URL;
 
-// 	const corsOptions = {
-// 		origin: (
-// 			origin: string | undefined,
-// 			callback: (err: Error | null, allow?: boolean) => void
-// 		) => {
-// 			// Check if the origin is in the allowed list
-// 			if (origin && allowedOrigin && origin === allowedOrigin) {
-// 				callback(null, true);
-// 			} else {
-// 				callback(new Error('Not allowed by CORS'));
-// 			}
-// 		},
-// 	};
-// 	app.use(cors(corsOptions));
-// }
+	const corsOptions = {
+		origin: (
+			origin: string | undefined,
+			callback: (err: Error | null, allow?: boolean) => void
+		) => {
+			// Check if the origin is in the allowed list
+			if (origin && allowedOrigin && origin === allowedOrigin) {
+				callback(null, true);
+			} else {
+				callback(new Error('Not allowed by CORS'));
+			}
+		},
+	};
+	app.use(cors(corsOptions));
+}
 
 const cache = new NodeCache({ stdTTL: 600 }); // Cache results for 10 minutes
 
@@ -77,10 +78,14 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 
 // Gets movies with similar titles
 app.get('/search/:title', async (req: Request, res: Response) => {
-	const title = req.params.title;
+	let title = req.params.title;
+	let page = '1';
+
 	try {
-		const page = req.query.page || 1;
-		const cacheKey = `s-${title}`;
+		if (title.includes('page')) {
+			[title, page] = req.params.title.split('&page=');
+		}
+		const cacheKey = `s-${title}${page}`;
 
 		const url = `https://api.themoviedb.org/3/search/movie?query=${title}&language=en-US&page=${page}`;
 
@@ -98,6 +103,42 @@ app.get('/search/:title', async (req: Request, res: Response) => {
 		res
 			.status(500)
 			.json({ error: `Error fetching search results for ${title}` });
+	}
+});
+
+// Gets movies by advanced query
+app.get('/discover/', async (req, res) => {
+	const queryParams: RequestParams = {};
+
+	for (const param of Object.keys(req.query)) {
+		if (param in queryParams) {
+			queryParams[param as RequestParam] = req.query[param] as string;
+		}
+	}
+
+	const queryString = Object.entries(queryParams)
+		.map(([param, value]) => formatQueryParam(param, value as string))
+		.join('&');
+
+	try {
+		const cacheKey = `q-${queryString}`;
+
+		const url = `https://api.themoviedb.org/3/discover/movie?${queryString}`;
+
+		const response = await axios.get(url, options);
+
+		// Check cache first
+		const cachedResult = cache.get(cacheKey);
+		if (cachedResult) {
+			return res.status(200).json(cachedResult as JSON[]);
+		}
+
+		cache.set(cacheKey, response.data);
+		res.status(200).json(response.data);
+	} catch (error) {
+		res
+			.status(500)
+			.json({ error: `Error fetching search results for ${queryString}` });
 	}
 });
 
