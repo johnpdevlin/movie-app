@@ -7,11 +7,28 @@ describe('Movie API Tests', () => {
 	it('should return a list of movies when searching by title', async () => {
 		const response = await request(app).get('/search/horse');
 		expect(response.status).toBe(200);
-
-		// Check that the response body matches the MovieInfo type
 		const movieInfo = response.body;
 		expect(movieInfo).toBeDefined();
-		// Ensure the response length is greater than 0
+		expect(movieInfo.length).toBeGreaterThan(0);
+	});
+
+	it('should return a list of movies when searching by language, page and sorted', async () => {
+		const response = await request(app).get(
+			'/discover/?language=en-US&page=1&sort_by=popularity.desc'
+		);
+		expect(response.status).toBe(200);
+		const movieInfo = response.body;
+		expect(movieInfo).toBeDefined();
+		expect(movieInfo.length).toBeGreaterThan(0);
+	});
+
+	it('should return a list of movies when searching by genre, with a runtime gte 120 and page 2', async () => {
+		const response = await request(app).get(
+			'/discover/?with_genres=28&with_runtime_gte=120&page=2'
+		);
+		expect(response.status).toBe(200);
+		const movieInfo = response.body;
+		expect(movieInfo).toBeDefined();
 		expect(movieInfo.length).toBeGreaterThan(0);
 	});
 
@@ -19,8 +36,6 @@ describe('Movie API Tests', () => {
 		const movieId = '123';
 		const response = await request(app).get(`/movie/${movieId}`);
 		expect(response.status).toBe(200);
-
-		// Check that the response body matches the MovieDetails type
 		const movieDetails = response.body;
 		expect(movieDetails).toBeDefined();
 	});
@@ -31,29 +46,24 @@ describe('Movie API Tests', () => {
 		expect(response.status).toBe(500);
 	});
 
+	it('should handle incorrect params when fetching movie details', async () => {
+		const response = await request(app).get(`/discover/invalid/`);
+		expect(response.status).toBe(500);
+	});
+
 	it('should handle rate limiting for /search/:title route', async () => {
-		// Perform more than the allowed number of requests in a short time frame
 		const promises = Array.from({ length: 200 }, () =>
 			request(app).get('/search/rate-limit-test')
 		);
-
-		// Wait for all requests to complete and collect their responses
 		const responses = await Promise.all(promises);
-
-		// Expect that the last request exceeds the rate limit (429 Too Many Requests)
 		expect(responses[responses.length - 1].status).toBe(429);
 	});
 
 	it('should handle rate limiting for /movie/:movieId route', async () => {
-		// Perform more than the allowed number of requests in a short time frame
 		const promises = Array.from({ length: 200 }, () =>
 			request(app).get('/movie/11')
 		);
-
-		// Wait for all requests to complete and collect their responses
 		const responses = await Promise.all(promises);
-
-		// Expect that the last request exceeds the rate limit (429 Too Many Requests)
 		expect(responses[responses.length - 1].status).toBe(429);
 	});
 
