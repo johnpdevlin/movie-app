@@ -44,7 +44,10 @@ function App() {
 			<CssBaseline />
 
 			<FavoriteMoviesProvider>
-				<AppBar setSearchTerm={setSearchTerm} />
+				<AppBar
+					setSearchTerm={setSearchTerm}
+					startTransition={startTransition}
+				/>
 				<main>
 					<Box sx={{ mx: 5 }}>
 						<Routes>

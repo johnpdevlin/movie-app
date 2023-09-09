@@ -1,6 +1,6 @@
 /** @format */
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
@@ -38,18 +38,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function SearchAppBar(props: {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+	startTransition: React.TransitionStartFunction;
 }) {
-	const searchTextRef = useRef<HTMLInputElement>(null);
+	const inputRef = useRef<HTMLInputElement>();
+	const [inputText, setInputText] = useState<string>('');
 	const navigate = useNavigate();
 	const location = useLocation();
+
+	useEffect(() => {
+		if (inputText === inputRef.current?.value && inputText.trim() !== '') {
+			props.setSearchTerm(inputText);
+			if (location.pathname !== '/') navigate('/');
+		}
+	}, [inputText]);
+
+	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		props.startTransition(() => {
+			setTimeout(() => setInputText(e.target.value), 1850);
+		});
+	};
 	const handleSearchSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		if (searchTextRef.current) {
-			const inputValue = searchTextRef.current.value;
-
+		if (inputRef.current!.value.trim() !== '') {
 			if (location.pathname !== '/') navigate('/');
-
-			props.setSearchTerm(inputValue);
+			props.setSearchTerm(inputRef.current!.value);
 		}
 	};
 
@@ -60,7 +72,8 @@ function SearchAppBar(props: {
 					<StyledInputBase
 						placeholder='Search…'
 						inputProps={{ 'aria-label': 'search' }}
-						inputRef={searchTextRef}
+						inputRef={inputRef}
+						onChange={handleSearchChange}
 					/>
 				</Search>
 			</form>

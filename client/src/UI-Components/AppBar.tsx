@@ -22,6 +22,7 @@ import { useFavoriteMovies } from '../context-store/favoritesProvider';
 
 export default function PrimaryAppBar(props: {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+	startTransition: React.TransitionStartFunction;
 }) {
 	const navigate = useNavigate();
 
@@ -91,7 +92,10 @@ export default function PrimaryAppBar(props: {
 								Movie App
 							</Typography>
 						</Link>
-						<SearchBar setSearchTerm={props.setSearchTerm} />
+						<SearchBar
+							setSearchTerm={props.setSearchTerm}
+							startTransition={props.startTransition}
+						/>
 						<Box sx={{ flexGrow: 1 }} />
 						<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 							<IconButton
