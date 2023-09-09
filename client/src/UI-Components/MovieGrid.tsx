@@ -24,11 +24,11 @@ function MovieGrid(props: {
 	return (
 		<>
 			<>
-				<Grid container mt={3} gap={1.5} justifyContent='flex'>
+				<Grid container mt={3} spacing={1.5} justifyContent='flex'>
 					{props.data.map((info: MovieInfo | MovieDetails, index) => {
 						return (
 							<>
-								<Grid item xs={3.6} sm={2.8} md={1.8} lg={1.6} key={index}>
+								<Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
 									<MovieCompact
 										id={info.id}
 										poster={info.poster_path!}
@@ -65,14 +65,13 @@ function MovieGrid(props: {
 
 function MovieGridSkeleton() {
 	return (
-		<Grid container mt={3} gap={1.5} justifyContent='flex'>
+		<Grid container mt={3} spacing={1.5} display='flex'>
 			{Array.from(new Array(20)).map((_, index) => {
 				return (
 					<>
-						<Grid item xs={3.6} sm={2.8} md={1.8} lg={1.6} key={index}>
+						<Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
 							<Skeleton variant='rectangular' width='100%' height={300} />
 						</Grid>
-						<Skeleton variant='text' />
 					</>
 				);
 			})}

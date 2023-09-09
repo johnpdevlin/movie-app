@@ -1,10 +1,11 @@
 /** @format */
-
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import AppBar from './UI-Components/AppBar';
 import { MovieGrid, MovieGridSkeleton } from './UI-Components/MovieGrid';
 import { MovieDetails, MovieInfo } from './models/movie';
-import axios from 'axios';
 import MoviePage from './UI-Components/MoviePage';
 import FavoritesPage from './UI-Components/FavoritesPage';
 import { Navigate, Route, Routes } from 'react-router-dom';
@@ -44,29 +45,33 @@ function App() {
 
 	return (
 		<>
+			<CssBaseline />
+
 			<FavoriteMoviesProvider>
 				<AppBar setSearchTerm={setSearchTerm} />
 				<main>
-					<Routes>
-						<Route
-							path='/'
-							element={
-								isLoading ? (
-									<MovieGridSkeleton />
-								) : (
-									<MovieGrid
-										data={data}
-										page={page}
-										pageCount={pageCount}
-										setPage={setPage}
-									/>
-								)
-							}
-						/>
-						<Route path='/:id' element={<MoviePage />} />
-						<Route path='/favorites' element={<FavoritesPage />} />
-						<Route path='*' element={<Navigate to='/' />} />
-					</Routes>
+					<Box sx={{ mx: 5 }}>
+						<Routes>
+							<Route
+								path='/'
+								element={
+									isLoading ? (
+										<MovieGridSkeleton />
+									) : (
+										<MovieGrid
+											data={data}
+											page={page}
+											pageCount={pageCount}
+											setPage={setPage}
+										/>
+									)
+								}
+							/>
+							<Route path='/:id' element={<MoviePage />} />
+							<Route path='/favorites' element={<FavoritesPage />} />
+							<Route path='*' element={<Navigate to='/' />} />
+						</Routes>
+					</Box>
 				</main>
 			</FavoriteMoviesProvider>
 		</>
