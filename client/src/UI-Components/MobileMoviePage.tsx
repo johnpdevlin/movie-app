@@ -1,28 +1,32 @@
 /** @format */
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import CalculateIcon from '@mui/icons-material/Calculate';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import BusinessIcon from '@mui/icons-material/Business';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import LanguageIcon from '@mui/icons-material/Language';
-import MovieRating from './MovieRating';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import Tooltip from '@mui/material/Tooltip';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
+import {
+	Stack,
+	Box,
+	Typography,
+	Card,
+	CardContent,
+	CardMedia,
+	Chip,
+	Tooltip,
+} from '@mui/material';
+import {
+	FavoriteBorder,
+	Calculate,
+	AttachMoney,
+	ShowChart,
+	Business,
+	AccessTime,
+	Favorite,
+	Language,
+} from '@mui/icons-material';
 import {
 	formatMinutesToHoursAndMinutes,
 	formatDollarsToCompact,
 } from '../utils/format';
 import { MovieDetails } from '../models/movie';
 import { formatStringWithColon } from '../utils/format';
+import MovieRating from './MovieRating';
 
 function MobileMoviePage(props: {
 	movie: MovieDetails | undefined;
@@ -51,9 +55,9 @@ function MobileMoviePage(props: {
 								</Typography>
 							</Box>
 							{isFavorite ? (
-								<FavoriteIcon onClick={toggleFavorite} />
+								<Favorite onClick={toggleFavorite} />
 							) : (
-								<FavoriteBorderIcon onClick={toggleFavorite} />
+								<FavoriteBorder onClick={toggleFavorite} />
 							)}
 						</Stack>
 
@@ -73,7 +77,7 @@ function MobileMoviePage(props: {
 							{movie?.original_language ? (
 								<Typography variant='subtitle2' color='text.secondary'>
 									<Tooltip title='Language'>
-										<LanguageIcon fontSize='small' />
+										<Language fontSize='small' />
 									</Tooltip>
 									{movie?.original_language}
 								</Typography>
@@ -81,7 +85,7 @@ function MobileMoviePage(props: {
 							{movie?.runtime ? (
 								<Typography variant='subtitle2' color='text.secondary'>
 									<Tooltip title='Runtime'>
-										<AccessTimeIcon fontSize='small' />
+										<AccessTime fontSize='small' />
 									</Tooltip>
 									{formatMinutesToHoursAndMinutes(movie.runtime)}
 								</Typography>
@@ -89,7 +93,7 @@ function MobileMoviePage(props: {
 							{movie?.revenue ? (
 								<Typography variant='subtitle2' color='text.secondary'>
 									<Tooltip title='Revenue'>
-										<AttachMoneyIcon fontSize='small' />
+										<AttachMoney fontSize='small' />
 									</Tooltip>
 									{formatDollarsToCompact(movie.revenue)}
 								</Typography>
@@ -97,7 +101,7 @@ function MobileMoviePage(props: {
 							{movie?.budget ? (
 								<Typography variant='subtitle2' color='text.secondary'>
 									<Tooltip title='Budget'>
-										<CalculateIcon fontSize='small' />
+										<Calculate fontSize='small' />
 									</Tooltip>
 									{formatDollarsToCompact(movie!.budget)}
 								</Typography>
@@ -105,7 +109,7 @@ function MobileMoviePage(props: {
 							{movie?.profit ? (
 								<Typography variant='subtitle2' color='text.secondary'>
 									<Tooltip title='Profit'>
-										<ShowChartIcon fontSize='small' />
+										<ShowChart fontSize='small' />
 									</Tooltip>
 									{formatDollarsToCompact(movie.profit)}
 								</Typography>
@@ -113,7 +117,7 @@ function MobileMoviePage(props: {
 							{movie?.production_companies ? (
 								<Typography variant='subtitle2' color='text.secondary'>
 									<Tooltip title='Production Companies'>
-										<BusinessIcon fontSize='small' />
+										<Business fontSize='small' />
 									</Tooltip>
 									{movie?.production_companies.map((comp, index) => (
 										<span key={index}>

@@ -74,7 +74,9 @@ function MoviePage() {
 						margin: 0,
 						padding: 0,
 						overflow: 'hidden',
-						width: '100%',
+						minHeight: '100vh',
+						minWidth: '100vh',
+
 						backgroundImage: `url('https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}')`,
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',

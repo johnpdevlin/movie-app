@@ -1,8 +1,6 @@
 /** @format */
 
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-
+import { Box, Typography } from '@mui/material';
 import { CSSProperties } from 'react';
 import { formatStringWithColon } from '../utils/format';
 
@@ -21,12 +19,12 @@ const TextOverlayImage = (props: {
 		textAlign: 'center',
 		color: 'black',
 		overflow: 'hidden',
-		borderRadius: props.borderRadius, // Set a default border radius
+		borderRadius: props.borderRadius,
 	};
 
 	const imgStyle: CSSProperties = {
 		width: `${imageWidth}%`,
-		borderRadius: props.borderRadius, // Set a default border radius
+		borderRadius: props.borderRadius,
 	};
 
 	const overlayStyle: CSSProperties = {

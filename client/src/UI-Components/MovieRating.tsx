@@ -1,7 +1,6 @@
 /** @format */
 
-import Rating from '@mui/material/Rating';
-import Stack from '@mui/material/Stack';
+import { Rating, Stack } from '@mui/material';
 
 export default function MovieRating(props: { value: number }) {
 	return (

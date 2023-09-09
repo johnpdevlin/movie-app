@@ -1,12 +1,10 @@
 /** @format */
-import * as React from 'react';
-import Grid from '@mui/material/Grid';
+import { useId } from 'react';
 import MovieCompact from './MovieCompact';
-import Pagination from '@mui/material/Pagination';
+import { Pagination, Skeleton, Box, Grid } from '@mui/material';
 import { MovieDetails, MovieInfo } from '../models/movie';
-import Box from '@mui/material/Box';
-import { Skeleton } from '@mui/material';
 import '../styles/fadein.css';
+
 function MovieGrid(props: {
 	data: (MovieInfo | MovieDetails)[];
 	page?: number;
@@ -23,12 +21,12 @@ function MovieGrid(props: {
 	}
 	return (
 		<>
-			<>
-				<Grid container mt={3} spacing={1.5} justifyContent='flex'>
+			<Box my={6} mx={4}>
+				<Grid container spacing={1.5} justifyContent='flex'>
 					{props.data.map((info: MovieInfo | MovieDetails, index) => {
 						return (
-							<>
-								<Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
+							<Grid item xs={6} sm={4} md={3} lg={2.4} key={info.id}>
+								<div className='fade-in'>
 									<MovieCompact
 										id={info.id}
 										poster={info.poster_path!}
@@ -36,8 +34,8 @@ function MovieGrid(props: {
 										release_date={info.release_date}
 										key={index}
 									/>
-								</Grid>
-							</>
+								</div>
+							</Grid>
 						);
 					})}
 				</Grid>
@@ -58,7 +56,7 @@ function MovieGrid(props: {
 						/>
 					</Box>
 				) : null}
-			</>
+			</Box>
 		</>
 	);
 }
@@ -66,18 +64,18 @@ function MovieGrid(props: {
 function MovieGridSkeleton() {
 	return (
 		<Grid container mt={3} spacing={1.5} display='flex'>
-			{Array.from(new Array(20)).map((_, index) => {
+			{Array.from(new Array(20)).map(() => {
 				return (
-					<>
-						<Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
+					<Grid item xs={6} sm={4} md={3} lg={2.4} key={useId()}>
+						<div className='fade-in'>
 							<Skeleton
 								variant='rectangular'
 								width='100%'
-								height={300}
+								height={320}
 								animation='wave'
 							/>
-						</Grid>
-					</>
+						</div>
+					</Grid>
 				);
 			})}
 		</Grid>

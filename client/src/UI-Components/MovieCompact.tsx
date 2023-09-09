@@ -13,7 +13,9 @@ const MovieCompact = (props: {
 }) => {
 	const paperRef = useRef<HTMLDivElement | null>(null);
 	const [paperBorderRadius, setPaperBorderRadius] = useState<number>(0);
-	const releaseYear = props.release_date.split('-')[0];
+	const releaseYear = props.release_date
+		? `${props.release_date.split('-')[0]}}`
+		: undefined;
 	useEffect(() => {
 		if (paperRef.current) {
 			// Get the Paper component's border radius
@@ -26,13 +28,21 @@ const MovieCompact = (props: {
 		return (
 			<>
 				<div className={'fade-in'}>
-					<Box key={props.id} minHeight={'100%'}>
+					<Box
+						key={props.id}
+						minHeight={'100%'}
+						sx={{
+							':hover': {
+								transform: 'scale(1.05)',
+								transition: 'transform 0.3s ease',
+							},
+						}}>
 						<Link to={`/${props.id}/`}>
 							<Paper elevation={24} ref={paperRef}>
 								<TextOverlayImage
 									image={`${props.poster}`}
 									text={props.title}
-									subText={`(${releaseYear})`}
+									subText={releaseYear}
 									borderRadius={paperBorderRadius}
 								/>
 							</Paper>

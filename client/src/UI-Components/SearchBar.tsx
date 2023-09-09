@@ -1,9 +1,8 @@
 /** @format */
 
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import InputBase from '@mui/material/InputBase';
+import { IconButton, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate, useLocation } from 'react-router-dom';
 

@@ -48,30 +48,29 @@ function App() {
 					setSearchTerm={setSearchTerm}
 					startTransition={startTransition}
 				/>
-				<main>
-					<Box sx={{ mx: 5 }}>
-						<Routes>
-							<Route
-								path='/'
-								element={
-									isPending ? (
-										<MovieGridSkeleton />
-									) : (
-										<MovieGrid
-											data={data}
-											page={page}
-											pageCount={pageCount}
-											setPage={setPage}
-										/>
-									)
-								}
-							/>
-							<Route path='/:id' element={<MoviePage />} />
-							<Route path='/favorites' element={<FavoritesPage />} />
-							<Route path='*' element={<Navigate to='/' />} />
-						</Routes>
-					</Box>
-				</main>
+
+				<Box sx={{ flexGrow: 1 }}>
+					<Routes>
+						<Route
+							path='/'
+							element={
+								isPending ? (
+									<MovieGridSkeleton />
+								) : (
+									<MovieGrid
+										data={data}
+										page={page}
+										pageCount={pageCount}
+										setPage={setPage}
+									/>
+								)
+							}
+						/>
+						<Route path='/:id' element={<MoviePage />} />
+						<Route path='/favorites' element={<FavoritesPage />} />
+						<Route path='*' element={<Navigate to='/' />} />
+					</Routes>
+				</Box>
 			</FavoriteMoviesProvider>
 		</>
 	);
