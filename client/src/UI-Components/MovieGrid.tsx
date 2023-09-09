@@ -6,7 +6,7 @@ import Pagination from '@mui/material/Pagination';
 import { MovieDetails, MovieInfo } from '../models/movie';
 import Box from '@mui/material/Box';
 import { Skeleton } from '@mui/material';
-
+import '../styles/fadein.css';
 function MovieGrid(props: {
 	data: (MovieInfo | MovieDetails)[];
 	page?: number;
@@ -70,7 +70,12 @@ function MovieGridSkeleton() {
 				return (
 					<>
 						<Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
-							<Skeleton variant='rectangular' width='100%' height={300} />
+							<Skeleton
+								variant='rectangular'
+								width='100%'
+								height={300}
+								animation='wave'
+							/>
 						</Grid>
 					</>
 				);

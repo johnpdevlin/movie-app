@@ -9,6 +9,7 @@ const MovieCompact = (props: {
 	poster: string;
 	title: string;
 	release_date: string;
+	loaded?: boolean;
 }) => {
 	const paperRef = useRef<HTMLDivElement | null>(null);
 	const [paperBorderRadius, setPaperBorderRadius] = useState<number>(0);
@@ -24,18 +25,20 @@ const MovieCompact = (props: {
 	if (props.poster!) {
 		return (
 			<>
-				<Box key={props.id} minHeight={'100%'}>
-					<Link to={`/${props.id}/`}>
-						<Paper elevation={24} ref={paperRef}>
-							<TextOverlayImage
-								image={`${props.poster}`}
-								text={props.title}
-								subText={`(${releaseYear})`}
-								borderRadius={paperBorderRadius}
-							/>
-						</Paper>
-					</Link>
-				</Box>
+				<div className={'fade-in'}>
+					<Box key={props.id} minHeight={'100%'}>
+						<Link to={`/${props.id}/`}>
+							<Paper elevation={24} ref={paperRef}>
+								<TextOverlayImage
+									image={`${props.poster}`}
+									text={props.title}
+									subText={`(${releaseYear})`}
+									borderRadius={paperBorderRadius}
+								/>
+							</Paper>
+						</Link>
+					</Box>
+				</div>
 			</>
 		);
 	}

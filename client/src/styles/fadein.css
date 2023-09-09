@@ -1,0 +1,7 @@
+/** @format */
+
+.fade-in {
+	opacity: 0;
+	transition: opacity 1.5s ease-in;
+	opacity: 1;
+}
