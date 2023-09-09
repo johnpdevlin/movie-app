@@ -8,6 +8,7 @@ import { useFavoriteMovies } from '../context-store/favoritesProvider';
 import MobileMoviePage from './MobileMoviePage';
 import DesktopMoviePage from './DesktopMoviePage';
 
+//https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/
 function MoviePage() {
 	const { id } = useParams();
 
@@ -31,9 +32,8 @@ function MoviePage() {
 	useEffect(() => {
 		setIsLoading(true);
 		axios
-			.get(
-				`https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/${id}`
-			)
+			.get(`http://localhost:8000/movie/${id}`)
+
 			.then((response) => {
 				const releaseYear = response.data.release_date.split('-')[0];
 				const profit = response.data.revenue - response.data.budget * 2;
@@ -66,6 +66,7 @@ function MoviePage() {
 		};
 	}, []);
 
+	//https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/
 	if (isLoading === false)
 		return (
 			<>
@@ -76,11 +77,10 @@ function MoviePage() {
 						overflow: 'hidden',
 						minHeight: '100vh',
 						minWidth: '100vh',
-
 						backgroundImage: `url('https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}')`,
 						backgroundSize: 'cover',
 						backgroundPosition: 'center',
-						opacity: 0.7,
+						opacity: 0.8,
 						display: 'flex',
 						justifyContent: 'center',
 						alignItems: 'center',

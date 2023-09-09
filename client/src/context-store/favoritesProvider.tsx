@@ -3,11 +3,13 @@
 import { createContext, useContext, ReactNode } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage'; // Import useLocalStorage hook
 import { MovieDetails } from '../models/movie'; // Import MovieDetails model
+import axios from 'axios';
 
 // Create a context
 type FavoriteMoviesContextType = {
 	favoriteMovies: MovieDetails[];
 	addFavoriteMovie: (movie: MovieDetails) => void;
+	isFavorite: (movieId: number) => boolean;
 	removeFavoriteMovie: (movieId: number) => void;
 	getFavoritesCount: () => number; // Add getFavoritesCount function
 };
@@ -38,8 +40,27 @@ export function FavoriteMoviesProvider({
 		[]
 	);
 
-	const addFavoriteMovie = (movie: MovieDetails) => {
-		setFavoriteMovies((prevFavorites) => [...prevFavorites, movie]);
+	const addFavoriteMovie = (movie: MovieDetails | number) => {
+		if (typeof movie === 'number') {
+			axios
+				.get(`http://localhost:8000/movie/${movie}`)
+				.then((response) => {
+					const releaseYear = response.data.release_date.split('-')[0];
+					const profit = response.data.revenue - response.data.budget * 2;
+					const movieDetails: MovieDetails = {
+						release_year: releaseYear,
+						profit: profit,
+						...response.data,
+					};
+					addFavoriteMovie(movieDetails);
+				})
+				.catch((error) => {
+					// Handle errors if necessary
+					console.error('Error fetching movie details:', error);
+				});
+		} else {
+			setFavoriteMovies((prevFavorites) => [...prevFavorites, movie]);
+		}
 	};
 
 	const removeFavoriteMovie = (movieId: number) => {
@@ -48,11 +69,16 @@ export function FavoriteMoviesProvider({
 		);
 	};
 
+	const isFavorite = (movieId: number) => {
+		return favoriteMovies.some((movie) => movie.id === movieId);
+	};
+
 	const getFavoritesCount = () => favoriteMovies.length; // Implement getFavoritesCount
 
 	const contextValue: FavoriteMoviesContextType = {
 		favoriteMovies,
 		addFavoriteMovie,
+		isFavorite,
 		removeFavoriteMovie,
 		getFavoritesCount, // Include getFavoritesCount in the context
 	};
