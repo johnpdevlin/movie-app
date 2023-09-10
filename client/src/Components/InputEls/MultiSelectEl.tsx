@@ -1,6 +1,5 @@
 /** @format */
 
-import React from 'react';
 import {
 	FormControl,
 	InputLabel,
@@ -24,39 +23,36 @@ const MenuProps = {
 };
 
 type MultipleSelectCheckmarksProps = {
-	selectRef: React.MutableRefObject<HTMLInputElement | undefined>;
 	label: string;
 	options: string[];
-	value: string | string[];
-	onChange: (value: string | string[]) => void;
+	selectedValues: string | string[];
+	setSelectedValues: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-export default function MultipleSelectCheckmarks(
-	props: MultipleSelectCheckmarksProps
-) {
+function MultipleSelectCheckmarks(props: MultipleSelectCheckmarksProps) {
 	const handleChange = (event: SelectChangeEvent<string[]>) => {
-		props.onChange(event.target.value);
+		props.setSelectedValues(event.target.value as string[]);
 	};
 
-	const selectedValues = Array.isArray(props.value)
-		? props.value
-		: [props.value];
+	const selectedValues = Array.isArray(props.selectedValues)
+		? props.selectedValues
+		: [props.selectedValues];
 
 	return (
 		<div>
-			<FormControl sx={{ m: 1, width: 300 }}>
-				<InputLabel id={`${props.value}-multiple-checkbox-label`}>
+			<FormControl fullWidth>
+				<InputLabel id={`${props.label}-multiple-checkbox-label`}>
 					{props.label}
 				</InputLabel>
 				<Select
-					labelId={`${props.value}-multiple-checkbox-label`}
-					id={`${props.value}-multiple-checkbox`}
+					labelId={`${props.label}-multiple-checkbox-label`}
+					id={`${props.label}-multiple-checkbox`}
 					multiple
 					value={selectedValues}
 					onChange={handleChange}
 					input={<OutlinedInput label={props.label} />}
 					renderValue={(selected) =>
-						Array.isArray(selected) ? selected.join(', ') : selected
+						Array.isArray(selectedValues) ? selected.join(', ') : selected
 					}
 					MenuProps={MenuProps}>
 					{props.options.map((option) => (
@@ -70,3 +66,5 @@ export default function MultipleSelectCheckmarks(
 		</div>
 	);
 }
+
+export default MultipleSelectCheckmarks;

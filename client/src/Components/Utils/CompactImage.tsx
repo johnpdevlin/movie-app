@@ -72,8 +72,8 @@ const CompactOverlayImage = (props: {
 
 	const iconOverlayStyle: CSSProperties = {
 		position: 'absolute',
-		top: '10px',
-		right: '10px',
+		top: '1px',
+		right: '1px',
 		color: 'white', // Set the color of the icon
 		zIndex: 1, // Ensure the icon appears above the overlay
 	};

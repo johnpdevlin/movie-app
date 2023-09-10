@@ -15,9 +15,10 @@ import Menu from '@mui/material/Menu';
 
 import { More, ArrowBack, Favorite, Bookmark } from '@mui/icons-material';
 
-import SearchBar from '../InputEl/SearchBar';
+import SearchBar from '../InputEls/SearchBar';
 import { useFavoriteMovies } from '../../context-store/favoritesProvider';
 import { useSavedMovies } from '../../context-store/savedProvider';
+import { Button } from '@mui/material';
 
 export default function PrimaryAppBar(props: {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
@@ -84,20 +85,30 @@ export default function PrimaryAppBar(props: {
 							onClick={() => navigate('..')}>
 							<ArrowBack />
 						</IconButton>
-						<Link to='/' style={{ textDecoration: 'none' }}>
+
+						<Button onClick={() => navigate('/')}>
 							<Typography
-								variant='h6'
+								variant='h4'
 								noWrap
-								component='div'
+								color='secondary'
 								sx={{ display: { xs: 'none', sm: 'block' } }}>
 								Movie App
 							</Typography>
-						</Link>
+						</Button>
+
 						<SearchBar
 							setSearchTerm={props.setSearchTerm}
 							startTransition={props.startTransition}
 						/>
+
 						<Box sx={{ flexGrow: 1 }} />
+						<Button
+							onClick={() => navigate('/discover')}
+							size='large'
+							aria-label='saved icon and count'
+							color='inherit'>
+							<Typography variant='h5'>Discover</Typography>
+						</Button>
 						<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 							<IconButton
 								onClick={() => navigate('/saved')}

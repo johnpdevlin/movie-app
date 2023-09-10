@@ -4,24 +4,26 @@ import Box from '@mui/material/Box';
 import { InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
 type BasicSelectProps = {
-	selectRef: React.MutableRefObject<HTMLInputElement | undefined>;
+	selectRef: React.MutableRefObject<number>;
 	label: string;
-	options: { label: string; value: string }[];
+	options: { label?: string; value: string | number }[];
 };
 
 function BasicSelect(props: BasicSelectProps) {
 	return (
-		<Box sx={{ minWidth: 120 }}>
+		<Box>
 			<FormControl fullWidth>
-				<InputLabel id='simple-select-label'>{props.label}</InputLabel>
+				<InputLabel id='select-label'>{props.label}</InputLabel>
 				<Select
+					placeholder='Release Year'
 					labelId={`${props.label}-select-label`}
 					id={`${props.label}-select-label`}
+					value={props.selectRef.current}
 					ref={props.selectRef}
-					label='Age'>
+					label={props.label}>
 					{props.options.map((option) => (
 						<MenuItem value={option.value} key={option.value}>
-							{option.label}
+							{option.label ? option.label : option.value}
 						</MenuItem>
 					))}
 				</Select>
