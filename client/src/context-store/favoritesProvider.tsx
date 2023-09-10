@@ -1,7 +1,7 @@
 /** @format */
 
 import { createContext, useContext, ReactNode } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage'; // Import useLocalStorage hook
+import useLocalStorage from '../hooks/useLocalStorage';
 import { MovieDetails } from '../models/movie'; // Import MovieDetails model
 import axios from 'axios';
 
@@ -11,7 +11,7 @@ type FavoriteMoviesContextType = {
 	addFavoriteMovie: (movie: MovieDetails) => void;
 	isFavorite: (movieId: number) => boolean;
 	removeFavoriteMovie: (movieId: number) => void;
-	getFavoritesCount: () => number; // Add getFavoritesCount function
+	getFavoritesCount: () => number;
 };
 
 const FavoriteMoviesContext = createContext<
@@ -69,18 +69,17 @@ export function FavoriteMoviesProvider({
 		);
 	};
 
-	const isFavorite = (movieId: number) => {
-		return favoriteMovies.some((movie) => movie.id === movieId);
-	};
+	const isFavorite = (movieId: number) =>
+		favoriteMovies.some((movie) => movie.id === movieId);
 
-	const getFavoritesCount = () => favoriteMovies.length; // Implement getFavoritesCount
+	const getFavoritesCount = () => favoriteMovies.length;
 
 	const contextValue: FavoriteMoviesContextType = {
 		favoriteMovies,
 		addFavoriteMovie,
 		isFavorite,
 		removeFavoriteMovie,
-		getFavoritesCount, // Include getFavoritesCount in the context
+		getFavoritesCount,
 	};
 
 	return (
