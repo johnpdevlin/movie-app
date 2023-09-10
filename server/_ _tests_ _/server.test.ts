@@ -4,6 +4,15 @@ import { app } from '../index';
 import request from 'supertest';
 
 describe('Movie API Tests', () => {
+	it('should return list of movie genres', async () => {
+		const response = await request(app).get(`/genres/list`);
+		expect(response.status).toBe(200);
+	});
+
+	it('should handle error for bad request to genres', async () => {
+		const response = await request(app).get(`/genres/lisp`);
+		expect(response.status).toBe(500);
+	});
 	it('should return a list of movies when searching by title', async () => {
 		const response = await request(app).get('/search/horse');
 		expect(response.status).toBe(200);
