@@ -166,9 +166,19 @@ app.get('/movie/:movieId', async (req: Request, res: Response) => {
 	}
 });
 
-// For checks by render serverless app
-app.get('/healthz', async (req: Request, res: Response) => {
-	res.status(200).json({ status: 'ok' });
+// Returns list of genres
+app.get('/genre/list', (req, res) => {
+	const url = `https://api.themoviedb.org/3/genre/movie/list?language=en-US`;
+	axios
+		.get(url, options)
+		.then((response) => {
+			res.status(200).json(response.data);
+		})
+		.catch((error) => {
+			res.status(500).json({
+				error: `Error fetching genre list.`,
+			});
+		});
 });
 
 app.listen(port, () => {
