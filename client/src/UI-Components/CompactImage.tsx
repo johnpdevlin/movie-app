@@ -3,9 +3,15 @@
 import { Box, Typography, IconButton } from '@mui/material';
 import { CSSProperties } from 'react';
 import { formatStringWithColon } from '../utils/format';
-import { Favorite, FavoriteBorder } from '@mui/icons-material'; // Import your desired icon library
-import { useFavoriteMovies } from '../context-store/favoritesProvider';
+import {
+	FavoriteTwoTone,
+	Favorite,
+	AddCircleTwoTone,
+	CheckCircleTwoTone,
+} from '@mui/icons-material'; // Import your desired icon library
 import { Link } from 'react-router-dom';
+import { useFavoriteMovies } from '../context-store/favoritesProvider';
+import { useSavedMovies } from '../context-store/savedProvider';
 
 const CompactOverlayImage = (props: {
 	id: number;
@@ -19,10 +25,17 @@ const CompactOverlayImage = (props: {
 	const { isFavorite, addFavoriteMovie, removeFavoriteMovie } =
 		useFavoriteMovies();
 
+	const { isSaved, addSavedMovie, removeSavedMovie } = useSavedMovies();
+
 	const toggleFavorite = () =>
-		isFavorite(props.id)
+		isFavorite(props.id as number)
 			? removeFavoriteMovie(props.id)
-			: addFavoriteMovie(props.id);
+			: addFavoriteMovie(props.id as number);
+
+	const toggleSaved = () =>
+		isSaved(props.id)
+			? removeSavedMovie(props.id)
+			: addSavedMovie(props.id as number);
 
 	const imageWidth = props.width || 100;
 
@@ -80,15 +93,26 @@ const CompactOverlayImage = (props: {
 				</Typography>
 			</div>
 
-			{isFavorite(props.id) ? (
-				<IconButton style={iconOverlayStyle} onClick={toggleFavorite}>
-					<Favorite />
-				</IconButton>
-			) : (
-				<IconButton style={iconOverlayStyle} onClick={toggleFavorite}>
-					<FavoriteBorder />
-				</IconButton>
-			)}
+			<div style={iconOverlayStyle}>
+				{isSaved(props.id) ? (
+					<IconButton onClick={toggleSaved}>
+						<CheckCircleTwoTone fontSize='large' />
+					</IconButton>
+				) : (
+					<IconButton onClick={toggleSaved}>
+						<AddCircleTwoTone fontSize='large' />
+					</IconButton>
+				)}
+				{isFavorite(props.id) ? (
+					<IconButton onClick={toggleFavorite}>
+						<Favorite fontSize='large' />
+					</IconButton>
+				) : (
+					<IconButton onClick={toggleFavorite}>
+						<FavoriteTwoTone fontSize='large' />
+					</IconButton>
+				)}
+			</div>
 		</Box>
 	);
 };

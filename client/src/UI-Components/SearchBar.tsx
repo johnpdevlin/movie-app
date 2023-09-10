@@ -35,10 +35,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-function SearchAppBar(props: {
+type SearchBarProps = {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 	startTransition: React.TransitionStartFunction;
-}) {
+};
+
+function SearchAppBar(props: SearchBarProps) {
 	const inputRef = useRef<HTMLInputElement>();
 	const [inputText, setInputText] = useState<string>('');
 	const navigate = useNavigate();

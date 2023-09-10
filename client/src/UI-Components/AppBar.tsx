@@ -13,12 +13,11 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
-import MoreIcon from '@mui/icons-material/MoreVert';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import { More, ArrowBack, Favorite, Bookmark } from '@mui/icons-material';
 
 import SearchBar from './SearchBar';
 import { useFavoriteMovies } from '../context-store/favoritesProvider';
+import { useSavedMovies } from '../context-store/savedProvider';
 
 export default function PrimaryAppBar(props: {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
@@ -28,6 +27,8 @@ export default function PrimaryAppBar(props: {
 
 	const { getFavoritesCount } = useFavoriteMovies();
 	const favoritesCount = getFavoritesCount();
+	const { getSavedCount } = useSavedMovies();
+	const savedCount = getSavedCount();
 
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
 		useState<null | HTMLElement>(null);
@@ -64,7 +65,7 @@ export default function PrimaryAppBar(props: {
 					aria-label='watch later icon and count'
 					color='inherit'>
 					<Badge badgeContent={favoritesCount} color='error'>
-						<FavoriteIcon />
+						<Favorite />
 					</Badge>
 				</IconButton>
 			</MenuItem>
@@ -81,7 +82,7 @@ export default function PrimaryAppBar(props: {
 							aria-label='Back Icon'
 							color='inherit'
 							onClick={() => navigate('..')}>
-							<ArrowBackIcon />
+							<ArrowBack />
 						</IconButton>
 						<Link to='/' style={{ textDecoration: 'none' }}>
 							<Typography
@@ -99,12 +100,21 @@ export default function PrimaryAppBar(props: {
 						<Box sx={{ flexGrow: 1 }} />
 						<Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 							<IconButton
+								onClick={() => navigate('/saved')}
+								size='large'
+								aria-label='saved icon and count'
+								color='inherit'>
+								<Badge badgeContent={savedCount} color='error'>
+									<Bookmark fontSize='large' />
+								</Badge>
+							</IconButton>
+							<IconButton
 								onClick={() => navigate('/favorites')}
 								size='large'
-								aria-label='watch later icon and count'
+								aria-label='favorite icon and count'
 								color='inherit'>
 								<Badge badgeContent={favoritesCount} color='error'>
-									<FavoriteIcon />
+									<Favorite fontSize='large' />
 								</Badge>
 							</IconButton>
 						</Box>
@@ -116,7 +126,7 @@ export default function PrimaryAppBar(props: {
 								aria-haspopup='true'
 								onClick={handleMobileMenuOpen}
 								color='inherit'>
-								<MoreIcon />
+								<More />
 							</IconButton>
 						</Box>
 					</Toolbar>
