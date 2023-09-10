@@ -6,6 +6,7 @@ client/build/
 client/node_modules/
 
 # Ignore backend build artifacts
+fb-server
 server/dist/
 server/node_modules/
 

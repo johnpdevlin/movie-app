@@ -4,7 +4,7 @@ import request from 'supertest';
 import { app } from '../index'; // Import your Express app instance
 
 // Import the functions/formatting you're using in the route handler
-import { formatQueryParam } from '../functions/src/formatParams';
+import { formatQueryParam } from '../formatParams';
 
 describe('GET /discover/', () => {
 	it('should respond with status 200 and JSON data', async () => {

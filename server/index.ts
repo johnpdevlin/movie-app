@@ -7,15 +7,11 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
-import {
-	RequestParam,
-	RequestParams,
-	formatQueryParam,
-} from './functions/src/formatParams';
+import { RequestParam, RequestParams, formatQueryParam } from './formatParams';
 
 dotenv.config();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 export const app = express();
 
 // Allow all CORS requests during development
