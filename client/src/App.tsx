@@ -1,30 +1,36 @@
 /** @format */
 import axios from 'axios';
 import { CssBaseline, Box } from '@mui/material';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect, useState, useTransition } from 'react';
 import { MovieDetails, MovieInfo } from './models/movie';
-import AppBar from './UI-Components/Utils/AppBar';
-import { MovieGrid, MovieGridSkeleton } from './UI-Components/Utils/MovieGrid';
-import MoviePage from './UI-Components/Page/MoviePage';
-import FavoritesPage from './UI-Components/Page/FavoritesPage';
-import SavedPage from './UI-Components/Page/SavedPage';
+import AppBar from './Components/Utils/AppBar';
+import { MovieGrid, MovieGridSkeleton } from './Components/Utils/MovieGrid';
+import MoviePage from './Components/Pages/MoviePage';
+import FavoritesPage from './Components/Pages/FavoritesPage';
+import SavedPage from './Components/Pages/SavedPage';
 import { FavoriteMoviesProvider } from './context-store/favoritesProvider';
 import { SavedMoviesProvider } from './context-store/savedProvider';
-import DiscoverPage from './UI-Components/Page/DiscoverPage';
+import DiscoverPage from './Components/Pages/DiscoverPage';
 
 function App() {
+	const location = useLocation();
 	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [searchParams, setSearchParams] = useState<string>('');
 	const [isPending, startTransition] = useTransition();
-	const [data, setData] = useState<Array<MovieDetails | MovieInfo>>([]);
+	const [data, setData] = useState<Array<MovieDetails | MovieInfo>>(() => []);
 	const [page, setPage] = useState<number>(1);
 	const [pageCount, setPageCount] = useState<number>(1);
 
 	useEffect(() => {
-		if (searchTerm !== '') {
+		if (searchTerm !== '' || searchParams !== '') {
 			startTransition(() => {
 				axios
-					.get(`http://localhost:8000/search/${searchTerm}`)
+					.get(
+						`http://localhost:8000/${
+							searchParams !== '' ? 'discover?' : 'search/'
+						}${searchTerm || searchParams}`
+					)
 
 					.then((res) => {
 						const filteredData = res.data.results.filter(
@@ -35,11 +41,18 @@ function App() {
 						if (page === 1) setPageCount(res.data.total_pages);
 
 						setData(filteredData);
+						setSearchParams('');
+						setSearchTerm('');
 					})
 					.catch((err) => console.log(err));
 			});
 		}
-	}, [searchTerm, page]);
+	}, [searchTerm, searchParams, page]);
+
+	useEffect(() => {
+		setData([]);
+		setPageCount(0);
+	}, [location]);
 
 	return (
 		<>
@@ -72,7 +85,19 @@ function App() {
 							<Route path='/:id' element={<MoviePage />} />
 							<Route path='/favorites' element={<FavoritesPage />} />
 							<Route path='/saved' element={<SavedPage />} />
-							<Route path='/discover' element={<DiscoverPage />} />
+							<Route
+								path='/discover'
+								element={
+									<DiscoverPage
+										setSearchParams={setSearchParams}
+										data={data}
+										isPending={isPending}
+										page={page}
+										pageCount={pageCount}
+										setPage={setPage}
+									/>
+								}
+							/>
 							<Route path='*' element={<Navigate to='/' />} />
 						</Routes>
 					</Box>
