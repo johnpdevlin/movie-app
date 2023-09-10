@@ -8,7 +8,7 @@ import axios from 'axios';
 // Create a context
 type SavedMoviesContextType = {
 	savedMovies: MovieDetails[];
-	addSavedMovie: (movie: MovieDetails) => void;
+	addSavedMovie: (movie: MovieDetails | number) => void;
 	isSaved: (movieId: number) => boolean;
 	removeSavedMovie: (movieId: number) => void;
 	getSavedCount: () => number;
@@ -39,7 +39,9 @@ export function SavedMoviesProvider({ children }: SavedMoviesProviderProps) {
 	const addSavedMovie = (movie: MovieDetails | number) => {
 		if (typeof movie === 'number') {
 			axios
-				.get(`http://localhost:8000/movie/${movie}`)
+				.get(
+					`https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/${movie}`
+				)
 				.then((response) => {
 					const releaseYear = response.data.release_date.split('-')[0];
 					const profit = response.data.revenue - response.data.budget * 2;

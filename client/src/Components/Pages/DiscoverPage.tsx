@@ -26,7 +26,6 @@ function DiscoverPage(props: DisoverPageProps) {
 	const selectedYear = useRef<number>(2023);
 	const [availableGenres, setAvailableGenres] = useState<string[]>([]);
 	const [genres, setGenres] = useState<string[]>([]);
-
 	const [ratingBelow, setRatingBelow] = useState<number>(0);
 	const [ratingAbove, setRatingAbove] = useState<number>(0);
 	const runtimeRange: [number, number] = [0, 360];
@@ -64,13 +63,17 @@ function DiscoverPage(props: DisoverPageProps) {
 	};
 
 	useEffect(() => {
-		axios.get('http://localhost:8000/genre/list').then((response) => {
-			setAvailableGenres(
-				response.data.genres.map((gen: { name: string; id: string }) => {
-					return gen.name;
-				})
-			);
-		});
+		axios
+			.get(
+				'https://us-central1-movie-app-server-222.cloudfunctions.net/api/genre/list'
+			)
+			.then((response) => {
+				setAvailableGenres(
+					response.data.genres.map((gen: { name: string; id: string }) => {
+						return gen.name;
+					})
+				);
+			});
 	}, []);
 
 	return (
@@ -109,7 +112,9 @@ function DiscoverPage(props: DisoverPageProps) {
 									<Typography gutterBottom>Rating (min):</Typography>
 									<Rating
 										size='large'
-										onChange={(e) => setRatingAbove(e.target.value)}
+										onChange={(e: any) =>
+											setRatingAbove(e.target.value as number)
+										}
 										precision={0.5}
 									/>
 								</Box>
@@ -117,7 +122,7 @@ function DiscoverPage(props: DisoverPageProps) {
 									<Typography gutterBottom>Rating (max):</Typography>
 									<Rating
 										size='large'
-										onChange={(e) => setRatingBelow(e.target.value)}
+										onChange={(e: any) => setRatingBelow(e.target.value)}
 										precision={0.5}
 									/>
 								</Box>

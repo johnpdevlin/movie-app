@@ -16,5 +16,8 @@
 	"bugs": {
 		"url": "https://github.com/johnpdevlin/movie-app/issues"
 	},
-	"homepage": "https://github.com/johnpdevlin/movie-app#readme"
+	"homepage": "https://github.com/johnpdevlin/movie-app#readme",
+	"dependencies": {
+		"dotenv": "^16.3.1"
+	}
 }

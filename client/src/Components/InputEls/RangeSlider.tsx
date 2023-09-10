@@ -3,11 +3,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import { formatMinutesToHoursAndMinutes } from '../../utils/format';
-
-function formatRuntime(value: number) {
-	return formatMinutesToHoursAndMinutes(value);
-}
 
 type RangeSliderProps = {
 	label: string;

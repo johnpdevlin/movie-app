@@ -1,4 +1,5 @@
 /** @format */
+
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -32,7 +33,9 @@ function MoviePage() {
 	useEffect(() => {
 		setIsLoading(true);
 		axios
-			.get(`http://localhost:8000/movie/${id}`)
+			.get(
+				`https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/${id}`
+			)
 
 			.then((response) => {
 				const releaseYear = response.data.release_date.split('-')[0];

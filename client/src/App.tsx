@@ -27,7 +27,7 @@ function App() {
 			startTransition(() => {
 				axios
 					.get(
-						`http://localhost:8000/${
+						`https://us-central1-movie-app-server-222.cloudfunctions.net/api/${
 							searchParams !== '' ? 'discover?' : 'search/'
 						}${searchTerm || searchParams}`
 					)
