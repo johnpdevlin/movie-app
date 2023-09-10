@@ -13,16 +13,16 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import BusinessIcon from '@mui/icons-material/Business';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LanguageIcon from '@mui/icons-material/Language';
-import MovieRating from './MovieRating';
+import MovieRating from '../Utils/MovieRating';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Tooltip from '@mui/material/Tooltip';
 import {
 	formatMinutesToHoursAndMinutes,
 	formatDollarsToCompact,
-} from '../utils/format';
+} from '../../utils/format';
 
-import { MovieDetails } from '../models/movie';
+import { MovieDetails } from '../../models/movie';
 
 function DesktopMoviePage(props: {
 	movie: MovieDetails | undefined;

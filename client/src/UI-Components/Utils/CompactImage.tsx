@@ -2,7 +2,7 @@
 
 import { Box, Typography, IconButton } from '@mui/material';
 import { CSSProperties } from 'react';
-import { formatStringWithColon } from '../utils/format';
+import { formatStringWithColon } from '../../utils/format';
 import {
 	FavoriteTwoTone,
 	Favorite,
@@ -10,8 +10,8 @@ import {
 	CheckCircleTwoTone,
 } from '@mui/icons-material'; // Import your desired icon library
 import { Link } from 'react-router-dom';
-import { useFavoriteMovies } from '../context-store/favoritesProvider';
-import { useSavedMovies } from '../context-store/savedProvider';
+import { useFavoriteMovies } from '../../context-store/favoritesProvider';
+import { useSavedMovies } from '../../context-store/savedProvider';
 
 const CompactOverlayImage = (props: {
 	id: number;

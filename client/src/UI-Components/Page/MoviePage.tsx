@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { MovieDetails } from '../models/movie';
-import { useFavoriteMovies } from '../context-store/favoritesProvider';
+import { MovieDetails } from '../../models/movie';
+import { useFavoriteMovies } from '../../context-store/favoritesProvider';
 import MobileMoviePage from './MobileMoviePage';
 import DesktopMoviePage from './DesktopMoviePage';
 

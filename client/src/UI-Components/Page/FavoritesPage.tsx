@@ -1,7 +1,7 @@
 /** @format */
 
-import { useFavoriteMovies } from '../context-store/favoritesProvider';
-import { MovieGrid } from './MovieGrid';
+import { useFavoriteMovies } from '../../context-store/favoritesProvider';
+import { MovieGrid } from '../Utils/MovieGrid';
 function FavoritesPage() {
 	const { favoriteMovies } = useFavoriteMovies();
 

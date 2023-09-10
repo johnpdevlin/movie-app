@@ -1,7 +1,7 @@
 /** @format */
 
-import { useSavedMovies } from '../context-store/savedProvider';
-import { MovieGrid } from './MovieGrid';
+import { useSavedMovies } from '../../context-store/savedProvider';
+import { MovieGrid } from '../Utils/MovieGrid';
 function savedPage() {
 	const { savedMovies } = useSavedMovies();
 

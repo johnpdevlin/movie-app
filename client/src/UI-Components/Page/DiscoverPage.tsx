@@ -1,5 +1,8 @@
 /** @format */
 
+import { useRef, useState } from 'react';
+import NumFieldSm from '../InputEl/NumFieldSm';
+
 // /** @format */
 
 // import React, { useRef, FormEvent } from 'react';
@@ -80,3 +83,23 @@
 // 		};
 // 	};
 // }
+
+function DiscoverPage() {
+	const [year, setYear] = useState<number | undefined>();
+	const [error, setError] = useState<boolean>(false);
+	return (
+		<>
+			<NumFieldSm
+				label='horse'
+				inputNum={year}
+				setInputNum={setYear}
+				error={error}
+				setError={setError}
+				type={'year'}
+			/>
+			{year}
+		</>
+	);
+}
+
+export default DiscoverPage;

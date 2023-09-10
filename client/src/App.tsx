@@ -4,13 +4,14 @@ import { CssBaseline, Box } from '@mui/material';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect, useState, useTransition } from 'react';
 import { MovieDetails, MovieInfo } from './models/movie';
-import AppBar from './UI-Components/AppBar';
-import { MovieGrid, MovieGridSkeleton } from './UI-Components/MovieGrid';
-import MoviePage from './UI-Components/MoviePage';
-import FavoritesPage from './UI-Components/FavoritesPage';
-import SavedPage from './UI-Components/SavedPage';
+import AppBar from './UI-Components/Utils/AppBar';
+import { MovieGrid, MovieGridSkeleton } from './UI-Components/Utils/MovieGrid';
+import MoviePage from './UI-Components/Page/MoviePage';
+import FavoritesPage from './UI-Components/Page/FavoritesPage';
+import SavedPage from './UI-Components/Page/SavedPage';
 import { FavoriteMoviesProvider } from './context-store/favoritesProvider';
 import { SavedMoviesProvider } from './context-store/savedProvider';
+import DiscoverPage from './UI-Components/Page/DiscoverPage';
 
 function App() {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -71,6 +72,7 @@ function App() {
 							<Route path='/:id' element={<MoviePage />} />
 							<Route path='/favorites' element={<FavoritesPage />} />
 							<Route path='/saved' element={<SavedPage />} />
+							<Route path='/discover' element={<DiscoverPage />} />
 							<Route path='*' element={<Navigate to='/' />} />
 						</Routes>
 					</Box>

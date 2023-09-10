@@ -2,8 +2,8 @@
 import { useId } from 'react';
 import MovieCompact from './MovieCompact';
 import { Pagination, Skeleton, Box, Grid } from '@mui/material';
-import { MovieDetails, MovieInfo } from '../models/movie';
-import '../styles/fadein.css';
+import { MovieDetails, MovieInfo } from '../../models/movie';
+import '../../styles/fadein.css';
 
 function MovieGrid(props: {
 	data: (MovieInfo | MovieDetails)[];

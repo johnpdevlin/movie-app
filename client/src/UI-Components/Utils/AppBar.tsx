@@ -15,9 +15,9 @@ import Menu from '@mui/material/Menu';
 
 import { More, ArrowBack, Favorite, Bookmark } from '@mui/icons-material';
 
-import SearchBar from './SearchBar';
-import { useFavoriteMovies } from '../context-store/favoritesProvider';
-import { useSavedMovies } from '../context-store/savedProvider';
+import SearchBar from '../InputEl/SearchBar';
+import { useFavoriteMovies } from '../../context-store/favoritesProvider';
+import { useSavedMovies } from '../../context-store/savedProvider';
 
 export default function PrimaryAppBar(props: {
 	setSearchTerm: React.Dispatch<React.SetStateAction<string>>;

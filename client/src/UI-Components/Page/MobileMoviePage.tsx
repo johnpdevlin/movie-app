@@ -23,10 +23,10 @@ import {
 import {
 	formatMinutesToHoursAndMinutes,
 	formatDollarsToCompact,
-} from '../utils/format';
-import { MovieDetails } from '../models/movie';
-import { formatStringWithColon } from '../utils/format';
-import MovieRating from './MovieRating';
+} from '../../utils/format';
+import { MovieDetails } from '../../models/movie';
+import { formatStringWithColon } from '../../utils/format';
+import MovieRating from '../Utils/MovieRating';
 
 function MobileMoviePage(props: {
 	movie: MovieDetails | undefined;
