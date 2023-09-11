@@ -3,17 +3,17 @@
 import Box from '@mui/material/Box';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { MovieDetails } from '../../models/movie';
 import { useFavoriteMovies } from '../../context-store/favoritesProvider';
-import MobileMoviePage from './MobileMoviePage';
-import DesktopMoviePage from './DesktopMoviePage';
+import MobileMoviePage, { MobileMovieSkeleton } from './MobileMoviePage';
+import DesktopMoviePage, { DesktopMovieSkeleton } from './DesktopMoviePage';
 import { useSavedMovies } from '../../context-store/savedProvider';
 
 function MoviePage() {
 	const { id } = useParams();
 
-	const [isLoading, setIsLoading] = useState<Boolean>(true);
+	const [isPending, startTransition] = useTransition();
 	const [movie, setMovie] = useState<MovieDetails>();
 	const { addFavoriteMovie, removeFavoriteMovie, isFavorite } =
 		useFavoriteMovies();
@@ -36,22 +36,21 @@ function MoviePage() {
 	};
 
 	useEffect(() => {
-		setIsLoading(true);
-		axios
-			.get(
-				`https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/${id}`
-			)
+		startTransition(() => {
+			axios
+				.get(
+					`https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/${id}`
+				)
 
-			.then((response) => {
-				const releaseYear = response.data.release_date.split('-')[0];
-				const profit = response.data.revenue - response.data.budget * 2;
-				setMovie({ release_year: releaseYear, profit, ...response.data });
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-
-		setIsLoading(false);
+				.then((response) => {
+					const releaseYear = response.data.release_date.split('-')[0];
+					const profit = response.data.revenue - response.data.budget * 2;
+					setMovie({ release_year: releaseYear, profit, ...response.data });
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		});
 	}, [id]);
 
 	const [isSmall, setIsSmall] = useState(false);
@@ -74,49 +73,57 @@ function MoviePage() {
 		};
 	}, []);
 
-	if (isLoading === false)
-		return (
-			<>
-				<Box
-					sx={{
-						margin: 0,
-						padding: 0,
-						overflow: 'hidden',
-						minHeight: '100vh',
-						minWidth: '100vh',
-						backgroundImage: `url('https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}')`,
-						backgroundSize: 'cover',
-						backgroundPosition: 'center',
-						opacity: 0.8,
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						textAlign: 'center',
-						color: 'white',
-						backgroundColor: 'black',
-					}}>
-					{isSmall ? (
-						<MobileMoviePage
-							movie={movie}
-							isLoading={isLoading}
-							isFavorite={isFavorite}
-							isSaved={isSaved}
-							toggleFavorite={toggleFavorite}
-							toggleSaved={toggleSaved}
-						/>
-					) : (
-						<DesktopMoviePage
-							movie={movie}
-							isLoading={isLoading}
-							isFavorite={isFavorite}
-							isSaved={isSaved}
-							toggleFavorite={toggleFavorite}
-							toggleSaved={toggleSaved}
-						/>
-					)}
-				</Box>
-			</>
-		);
+	return (
+		<>
+			<Box
+				sx={{
+					margin: 0,
+					padding: 0,
+					overflow: 'hidden',
+					minHeight: '100vh',
+					minWidth: '100vh',
+					backgroundImage: `url('https://image.tmdb.org/t/p/w500/${movie?.backdrop_path}')`,
+					backgroundSize: 'cover',
+					backgroundPosition: 'center',
+					opacity: 0.8,
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center',
+					textAlign: 'center',
+					color: 'white',
+					backgroundColor: 'black',
+				}}>
+				<>
+					{isSmall === true ? (
+						isPending ? (
+							MobileMovieSkeleton
+						) : (
+							<MobileMoviePage
+								movie={movie}
+								isFavorite={isFavorite}
+								isSaved={isSaved}
+								toggleFavorite={toggleFavorite}
+								toggleSaved={toggleSaved}
+							/>
+						)
+					) : null}
+					{isSmall === false ? (
+						isPending ? (
+							DesktopMovieSkeleton
+						) : (
+							<DesktopMoviePage
+								movie={movie}
+								isFavorite={isFavorite}
+								isSaved={isSaved}
+								toggleFavorite={toggleFavorite}
+								toggleSaved={toggleSaved}
+							/>
+						)
+					) : null}
+				</>
+			</Box>
+		</>
+	);
 }
 
 export default MoviePage;
