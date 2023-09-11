@@ -55,7 +55,7 @@ function SearchAppBar(props: SearchBarProps) {
 
 	const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		props.startTransition(() => {
-			setTimeout(() => setInputText(e.target.value), 1850);
+			setTimeout(() => setInputText(e.target.value), 1650);
 		});
 	};
 	const handleSearchSubmit = (e: React.FormEvent) => {
