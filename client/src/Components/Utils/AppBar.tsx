@@ -13,7 +13,7 @@ import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
-import { More, ArrowBack, Favorite, Bookmark } from '@mui/icons-material';
+import { More, AutoAwesome, Favorite, Bookmark } from '@mui/icons-material';
 
 import SearchBar from '../InputEls/SearchBar';
 import { useFavoriteMovies } from '../../context-store/favoritesProvider';
@@ -62,12 +62,38 @@ export default function PrimaryAppBar(props: {
 			onClose={handleMobileMenuClose}>
 			<MenuItem>
 				<IconButton
-					size='large'
-					aria-label='watch later icon and count'
+					href='/discover'
+					size='small'
+					aria-label='autoawesome / discover'
 					color='inherit'>
-					<Badge badgeContent={favoritesCount} color='error'>
+					<Badge sx={{ mr: 1.9 }}>
+						<AutoAwesome />
+					</Badge>
+					Discover
+				</IconButton>
+			</MenuItem>
+			<MenuItem>
+				<IconButton
+					href='/favorites'
+					size='small'
+					aria-label='favourite icon and count'
+					color='inherit'>
+					<Badge badgeContent={favoritesCount} color='error' sx={{ mr: 1.9 }}>
 						<Favorite />
 					</Badge>
+					Favorites
+				</IconButton>
+			</MenuItem>
+			<MenuItem>
+				<IconButton
+					href='/saved'
+					size='small'
+					aria-label='watch later icon and count'
+					color='inherit'>
+					<Badge badgeContent={savedCount} color='error' sx={{ mr: 1.9 }}>
+						<Bookmark />
+					</Badge>
+					Saved
 				</IconButton>
 			</MenuItem>
 		</Menu>
@@ -75,17 +101,9 @@ export default function PrimaryAppBar(props: {
 
 	return (
 		<header>
-			<Box sx={{ flexGrow: 1 }}>
-				<AppBar position='static'>
+			<Box sx={{ flexGrow: 1, width: '100%' }}>
+				<AppBar position='static' sx={{ width: '100%' }}>
 					<Toolbar>
-						<IconButton
-							size='large'
-							aria-label='Back Icon'
-							color='inherit'
-							onClick={() => navigate('..')}>
-							<ArrowBack />
-						</IconButton>
-
 						<Button onClick={() => navigate('/')}>
 							<Typography
 								variant='h4'
@@ -104,6 +122,7 @@ export default function PrimaryAppBar(props: {
 						<Box sx={{ flexGrow: 1 }} />
 						<Button
 							onClick={() => navigate('/discover')}
+							sx={{ display: { xs: 'none', sm: 'block' } }}
 							size='large'
 							aria-label='saved icon and count'
 							color='inherit'>

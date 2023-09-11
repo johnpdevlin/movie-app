@@ -10,7 +10,6 @@ import MobileMoviePage from './MobileMoviePage';
 import DesktopMoviePage from './DesktopMoviePage';
 import { useSavedMovies } from '../../context-store/savedProvider';
 
-//https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/
 function MoviePage() {
 	const { id } = useParams();
 
@@ -75,7 +74,6 @@ function MoviePage() {
 		};
 	}, []);
 
-	//https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/
 	if (isLoading === false)
 		return (
 			<>

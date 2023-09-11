@@ -45,8 +45,8 @@ function DiscoverPage(props: DisoverPageProps) {
 			genres.map((g) => g.value).join(','),
 			selectedRuntimeRange[0],
 			selectedRuntimeRange[1],
-			ratingAbove,
-			ratingBelow,
+			ratingAbove * 2,
+			ratingBelow * 2,
 		];
 
 		const queryString = params
@@ -89,7 +89,7 @@ function DiscoverPage(props: DisoverPageProps) {
 	return (
 		<>
 			<Grid container>
-				<Grid item xs={5} sm={4} md={2.5} lg={2}>
+				<Grid item xs={12} sm={3} md={2} lg={2.5}>
 					<Box m={2} mt={6}>
 						<Stack spacing={3}>
 							<MultiSelectEl
@@ -160,7 +160,7 @@ function DiscoverPage(props: DisoverPageProps) {
 						</Stack>
 					</Box>
 				</Grid>
-				<Grid item xs={7} sm={8} md={9.5} lg={10}>
+				<Grid item xs={12} sm={9} md={10} lg={9.5}>
 					{props.isPending ? (
 						<MovieGridSkeleton />
 					) : (

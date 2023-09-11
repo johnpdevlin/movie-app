@@ -9,9 +9,9 @@ import {
 	CardMedia,
 	Chip,
 	Tooltip,
+	IconButton,
 } from '@mui/material';
 import {
-	FavoriteBorder,
 	Calculate,
 	AttachMoney,
 	ShowChart,
@@ -19,6 +19,9 @@ import {
 	AccessTime,
 	Favorite,
 	Language,
+	CheckCircleTwoTone,
+	AddCircleTwoTone,
+	FavoriteTwoTone,
 } from '@mui/icons-material';
 import {
 	formatMinutesToHoursAndMinutes,
@@ -43,32 +46,46 @@ function MobileMoviePage(props: {
 		return (
 			<>
 				<Card sx={{ textAlign: 'center', contentAlign: 'center' }}>
-					<CardMedia
-						component='img'
-						sx={{ width: '95%', margin: 'auto' }}
-						image={`https://image.tmdb.org/t/p/w300/${movie?.poster_path}`}
-						alt={movie?.title}
-					/>
 					<CardContent>
+						<CardMedia
+							component='img'
+							sx={{ width: '90%', margin: 'auto' }}
+							image={`https://image.tmdb.org/t/p/w300/${movie?.poster_path}`}
+							alt={movie?.title}
+						/>
 						<Stack flexDirection={'row'} alignItems={'center'}>
-							<Box sx={{ minWidth: '90%' }}>
-								<Typography variant='h4' component='div'>
-									{formatStringWithColon(movie?.title!)}{' '}
-									{movie?.release_year ? `(${movie?.release_year})` : ''}
-								</Typography>
+							<Box sx={{ minWidth: '100%' }}>
+								<Stack>
+									<Typography
+										variant='h4'
+										component='title'
+										minWidth='85%'
+										maxWidth='90%'>
+										{formatStringWithColon(movie?.title!)}{' '}
+										{movie?.release_year ? `(${movie?.release_year})` : ''}
+									</Typography>
+									<Stack direction={'row'} spacing={1} right={0} top={0}>
+										{isSaved(movie?.id as number) ? (
+											<IconButton onClick={toggleSaved}>
+												<CheckCircleTwoTone fontSize='medium' />
+											</IconButton>
+										) : (
+											<IconButton onClick={toggleSaved}>
+												<AddCircleTwoTone fontSize='medium' />
+											</IconButton>
+										)}
+										{isFavorite(movie?.id as number) ? (
+											<IconButton onClick={toggleFavorite}>
+												<Favorite fontSize='medium' />
+											</IconButton>
+										) : (
+											<IconButton onClick={toggleFavorite}>
+												<FavoriteTwoTone fontSize='medium' />
+											</IconButton>
+										)}
+									</Stack>
+								</Stack>
 							</Box>
-							<Stack position={'absolute'} right={0} top={0}>
-								{isFavorite(movie?.id!) ? (
-									<Favorite onClick={toggleFavorite} />
-								) : (
-									<FavoriteBorder onClick={toggleFavorite} />
-								)}
-								{isSaved(movie?.id!) ? (
-									<Favorite onClick={toggleSaved} />
-								) : (
-									<FavoriteBorder onClick={toggleSaved} />
-								)}
-							</Stack>
 						</Stack>
 
 						{movie?.vote_average && (
@@ -124,6 +141,12 @@ function MobileMoviePage(props: {
 									{formatDollarsToCompact(movie.profit)}
 								</Typography>
 							) : null}
+						</Stack>
+						<Stack
+							textAlign={'start'}
+							alignItems={'left'}
+							flexDirection={'row'}
+							gap={3}>
 							{movie?.production_companies ? (
 								<Typography variant='subtitle2' color='text.secondary'>
 									<Tooltip title='Production Companies'>
@@ -137,14 +160,14 @@ function MobileMoviePage(props: {
 									))}
 								</Typography>
 							) : null}
+							{movie?.genres && (
+								<div>
+									{movie?.genres.map((gen) => (
+										<Chip label={gen.name} key={gen.id} sx={{ m: 0.5 }} />
+									))}
+								</div>
+							)}
 						</Stack>
-						{movie?.genres && (
-							<div>
-								{movie?.genres.map((gen) => (
-									<Chip label={gen.name} key={gen.id} sx={{ m: 0.5 }} />
-								))}
-							</div>
-						)}
 					</CardContent>
 				</Card>
 			</>
