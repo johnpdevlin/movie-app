@@ -9,9 +9,9 @@ import { MovieGrid, MovieGridSkeleton } from './Components/Utils/MovieGrid';
 import MoviePage from './Components/Pages/MoviePage';
 import FavoritesPage from './Components/Pages/FavoritesPage';
 import SavedPage from './Components/Pages/SavedPage';
+import DiscoverPage from './Components/Pages/DiscoverPage';
 import { FavoriteMoviesProvider } from './context-store/favoritesProvider';
 import { SavedMoviesProvider } from './context-store/savedProvider';
-import DiscoverPage from './Components/Pages/DiscoverPage';
 
 function App() {
 	const location = useLocation();
@@ -21,6 +21,22 @@ function App() {
 	const [data, setData] = useState<Array<MovieDetails | MovieInfo>>(() => []);
 	const [page, setPage] = useState<number>(() => 1);
 	const [pageCount, setPageCount] = useState<number>(1);
+
+	useEffect(() => {
+		/* 
+		   Clear the data and params etc. if going to / or discover 
+		   Or not returning to previous path where api calls are made
+		*/
+		if (
+			(location.pathname === '/' && searchParams !== '') ||
+			(location.pathname === '/discover' && searchTerm !== '')
+		) {
+			setSearchParams('');
+			setSearchTerm('');
+			setPageCount(0);
+			setData([]);
+		}
+	}, [location]);
 
 	useEffect(() => {
 		if (searchTerm !== '' || searchParams !== '') {
@@ -48,13 +64,6 @@ function App() {
 			});
 		}
 	}, [searchTerm, searchParams, page]);
-
-	useEffect(() => {
-		setSearchParams('');
-		setSearchTerm('');
-		setPageCount(0);
-		setData([]);
-	}, [location]);
 
 	return (
 		<>
