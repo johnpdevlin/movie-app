@@ -14,8 +14,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LanguageIcon from '@mui/icons-material/Language';
 import MovieRating from '../Utils/MovieRating';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
 import Tooltip from '@mui/material/Tooltip';
 import {
 	formatMinutesToHoursAndMinutes,
@@ -23,14 +22,24 @@ import {
 } from '../../utils/format';
 
 import { MovieDetails } from '../../models/movie';
+import { IconButton } from '@mui/material';
+import {
+	AddCircleTwoTone,
+	CheckCircleTwoTone,
+	Favorite,
+	FavoriteTwoTone,
+} from '@mui/icons-material';
 
 function DesktopMoviePage(props: {
 	movie: MovieDetails | undefined;
 	isLoading: Boolean;
-	isFavorite: Boolean;
+	isFavorite: (id: number) => Boolean;
 	toggleFavorite: () => void;
+	isSaved: (id: number) => Boolean;
+	toggleSaved: () => void;
 }) {
-	const { movie, isLoading, isFavorite, toggleFavorite } = props;
+	const { movie, isLoading, isFavorite, toggleFavorite, isSaved, toggleSaved } =
+		props;
 
 	if (isLoading === false || !movie)
 		return (
@@ -69,11 +78,29 @@ function DesktopMoviePage(props: {
 											{movie?.release_year}
 										</Typography>
 									</Stack>
-									<Stack direction={'row'} spacing={1} margin={2}>
-										{isFavorite ? (
-											<FavoriteIcon onClick={toggleFavorite} />
+									<Stack
+										direction={'row'}
+										spacing={1}
+										margin={2}
+										right={0}
+										top={0}>
+										{isSaved(movie?.id as number) ? (
+											<IconButton onClick={toggleSaved}>
+												<CheckCircleTwoTone fontSize='large' />
+											</IconButton>
 										) : (
-											<FavoriteBorderIcon onClick={toggleFavorite} />
+											<IconButton onClick={toggleSaved}>
+												<AddCircleTwoTone fontSize='large' />
+											</IconButton>
+										)}
+										{isFavorite(movie?.id as number) ? (
+											<IconButton onClick={toggleFavorite}>
+												<Favorite fontSize='large' />
+											</IconButton>
+										) : (
+											<IconButton onClick={toggleFavorite}>
+												<FavoriteTwoTone fontSize='large' />
+											</IconButton>
 										)}
 									</Stack>
 								</Stack>

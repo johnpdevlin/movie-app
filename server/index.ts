@@ -107,7 +107,8 @@ app.get('/search/:title', async (req: Request, res: Response) => {
 });
 
 // Gets movies by advanced query
-app.get('/discover/', async (req, res) => {
+app.get('/discover?', async (req, res) => {
+	res.json(req);
 	const queryParams: RequestParams = {};
 
 	for (const param of Object.keys(req.query)) {

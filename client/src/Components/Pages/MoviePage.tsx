@@ -8,6 +8,7 @@ import { MovieDetails } from '../../models/movie';
 import { useFavoriteMovies } from '../../context-store/favoritesProvider';
 import MobileMoviePage from './MobileMoviePage';
 import DesktopMoviePage from './DesktopMoviePage';
+import { useSavedMovies } from '../../context-store/savedProvider';
 
 //https://us-central1-movie-app-server-222.cloudfunctions.net/api/movie/
 function MoviePage() {
@@ -15,15 +16,20 @@ function MoviePage() {
 
 	const [isLoading, setIsLoading] = useState<Boolean>(true);
 	const [movie, setMovie] = useState<MovieDetails>();
-	const { favoriteMovies, addFavoriteMovie, removeFavoriteMovie } =
+	const { addFavoriteMovie, removeFavoriteMovie, isFavorite } =
 		useFavoriteMovies();
+	const { addSavedMovie, removeSavedMovie, isSaved } = useSavedMovies();
 
-	const isFavorite = favoriteMovies.some(
-		(favMovie) => favMovie.id === movie?.id
-	);
+	const toggleSaved = () => {
+		if (isSaved(movie!.id)) {
+			removeSavedMovie(movie!.id);
+		} else {
+			addSavedMovie(movie!);
+		}
+	};
 
 	const toggleFavorite = () => {
-		if (isFavorite) {
+		if (isFavorite(movie!.id)) {
 			removeFavoriteMovie(movie!.id);
 		} else {
 			addFavoriteMovie(movie!);
@@ -96,14 +102,18 @@ function MoviePage() {
 							movie={movie}
 							isLoading={isLoading}
 							isFavorite={isFavorite}
+							isSaved={isSaved}
 							toggleFavorite={toggleFavorite}
+							toggleSaved={toggleSaved}
 						/>
 					) : (
 						<DesktopMoviePage
 							movie={movie}
 							isLoading={isLoading}
 							isFavorite={isFavorite}
+							isSaved={isSaved}
 							toggleFavorite={toggleFavorite}
+							toggleSaved={toggleSaved}
 						/>
 					)}
 				</Box>

@@ -31,10 +31,13 @@ import MovieRating from '../Utils/MovieRating';
 function MobileMoviePage(props: {
 	movie: MovieDetails | undefined;
 	isLoading: Boolean;
-	isFavorite: Boolean;
+	isSaved: (id: number) => Boolean;
+	toggleSaved: () => void;
+	isFavorite: (id: number) => Boolean;
 	toggleFavorite: () => void;
 }) {
-	const { movie, isLoading, isFavorite, toggleFavorite } = props;
+	const { movie, isLoading, isFavorite, toggleFavorite, isSaved, toggleSaved } =
+		props;
 
 	if (isLoading === false || movie === undefined)
 		return (
@@ -54,11 +57,18 @@ function MobileMoviePage(props: {
 									{movie?.release_year ? `(${movie?.release_year})` : ''}
 								</Typography>
 							</Box>
-							{isFavorite ? (
-								<Favorite onClick={toggleFavorite} />
-							) : (
-								<FavoriteBorder onClick={toggleFavorite} />
-							)}
+							<Stack position={'absolute'} right={0} top={0}>
+								{isFavorite(movie?.id!) ? (
+									<Favorite onClick={toggleFavorite} />
+								) : (
+									<FavoriteBorder onClick={toggleFavorite} />
+								)}
+								{isSaved(movie?.id!) ? (
+									<Favorite onClick={toggleSaved} />
+								) : (
+									<FavoriteBorder onClick={toggleSaved} />
+								)}
+							</Stack>
 						</Stack>
 
 						{movie?.vote_average && (

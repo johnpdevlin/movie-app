@@ -1,8 +1,16 @@
 /** @format */
 
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import SelectEl from '../InputEls/SelectEl';
-import { Box, Button, Grid, Rating, Stack, Typography } from '@mui/material';
+import {
+	Alert,
+	Box,
+	Button,
+	Grid,
+	Rating,
+	Stack,
+	Typography,
+} from '@mui/material';
 import MultiSelectEl from '../InputEls/MultiSelectEl';
 import RangeSlider from '../InputEls/RangeSlider';
 import { Check } from '@mui/icons-material';
@@ -23,9 +31,13 @@ function DiscoverPage(props: DisoverPageProps) {
 		{ length: new Date().getFullYear() - 1880 + 1 },
 		(_, index) => 1880 + index
 	).reverse();
-	const selectedYear = useRef<number>(2023);
-	const [availableGenres, setAvailableGenres] = useState<string[]>([]);
-	const [genres, setGenres] = useState<string[]>([]);
+	const [selectedYear, setSelectedYear] = useState<number>(
+		new Date().getFullYear() as number
+	);
+	const [availableGenres, setAvailableGenres] = useState<
+		{ name: string; value: number }[]
+	>([]);
+	const [genres, setGenres] = useState<{ name: string; value: number }[]>([]);
 	const [ratingBelow, setRatingBelow] = useState<number>(0);
 	const [ratingAbove, setRatingAbove] = useState<number>(0);
 	const runtimeRange: [number, number] = [0, 360];
@@ -34,8 +46,8 @@ function DiscoverPage(props: DisoverPageProps) {
 
 	const handleSubmit = () => {
 		const params = [
-			selectedYear.current,
-			genres.join(','),
+			selectedYear,
+			genres.map((g) => g.value).join(','),
 			selectedRuntimeRange[0],
 			selectedRuntimeRange[1],
 			ratingAbove,
@@ -53,7 +65,8 @@ function DiscoverPage(props: DisoverPageProps) {
 						'vote_average_gte',
 						'vote_average_lte',
 					][index];
-					return `${variableName}=${encodeURIComponent(value)}`;
+					if (value === '' || value === 0) return '';
+					else return `${variableName}=${encodeURIComponent(value)}`;
 				}
 			})
 			.filter(Boolean)
@@ -70,7 +83,7 @@ function DiscoverPage(props: DisoverPageProps) {
 			.then((response) => {
 				setAvailableGenres(
 					response.data.genres.map((gen: { name: string; id: string }) => {
-						return gen.name;
+						return { name: gen.name, value: gen.id };
 					})
 				);
 			});
@@ -79,14 +92,22 @@ function DiscoverPage(props: DisoverPageProps) {
 	return (
 		<>
 			<Grid container>
+				<Box width={'100%'}>
+					<Alert severity='warning'>
+						This page is still under construction!
+					</Alert>
+				</Box>
 				<Grid item xs={5} sm={4} md={2.5} lg={2}>
 					<Box m={2} mt={6}>
 						<Stack spacing={3}>
 							<MultiSelectEl
 								label={'Genres'}
 								options={availableGenres}
-								selectedValues={genres}
-								setSelectedValues={setGenres}
+								setSelectedValues={
+									setGenres as Dispatch<
+										SetStateAction<{ name: string; value: string | number }[]>
+									>
+								}
 							/>
 
 							<SelectEl
@@ -94,7 +115,8 @@ function DiscoverPage(props: DisoverPageProps) {
 								options={years.map((y) => {
 									return { value: y };
 								})}
-								selectRef={selectedYear}
+								selectedValue={selectedYear}
+								setSelectedValue={setSelectedYear}
 							/>
 
 							<Box>

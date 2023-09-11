@@ -15,7 +15,8 @@ function MovieGrid(props: {
 		_event: React.ChangeEvent<unknown>,
 		page: number
 	): void {
-		if (props.setPage !== undefined) {
+		if (props.setPage) {
+			console.log(props.page);
 			props.setPage(page);
 		}
 	}

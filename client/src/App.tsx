@@ -19,17 +19,20 @@ function App() {
 	const [searchParams, setSearchParams] = useState<string>('');
 	const [isPending, startTransition] = useTransition();
 	const [data, setData] = useState<Array<MovieDetails | MovieInfo>>(() => []);
-	const [page, setPage] = useState<number>(1);
+	const [page, setPage] = useState<number>(() => 1);
 	const [pageCount, setPageCount] = useState<number>(1);
 
 	useEffect(() => {
 		if (searchTerm !== '' || searchParams !== '') {
 			startTransition(() => {
+				const query = `${searchParams !== '' ? 'discover?' : 'search/'}${
+					searchTerm || searchParams
+				}&page=${page}`;
+
+				console.log(query);
 				axios
 					.get(
-						`https://us-central1-movie-app-server-222.cloudfunctions.net/api/${
-							searchParams !== '' ? 'discover?' : 'search/'
-						}${searchTerm || searchParams}`
+						`https://us-central1-movie-app-server-222.cloudfunctions.net/api/${query}`
 					)
 
 					.then((res) => {
@@ -41,8 +44,6 @@ function App() {
 						if (page === 1) setPageCount(res.data.total_pages);
 
 						setData(filteredData);
-						setSearchParams('');
-						setSearchTerm('');
 					})
 					.catch((err) => console.log(err));
 			});
@@ -50,8 +51,10 @@ function App() {
 	}, [searchTerm, searchParams, page]);
 
 	useEffect(() => {
-		setData([]);
+		setSearchParams('');
+		setSearchTerm('');
 		setPageCount(0);
+		setData([]);
 	}, [location]);
 
 	return (
