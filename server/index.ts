@@ -108,13 +108,10 @@ app.get('/search/:title', async (req: Request, res: Response) => {
 
 // Gets movies by advanced query
 app.get('/discover?', async (req, res) => {
-	res.json(req);
 	const queryParams: RequestParams = {};
 
 	for (const param of Object.keys(req.query)) {
-		if (param in queryParams) {
-			queryParams[param as RequestParam] = req.query[param] as string;
-		}
+		queryParams[param as RequestParam] = req.query[param] as string;
 	}
 
 	const queryString = Object.entries(queryParams)
@@ -135,9 +132,9 @@ app.get('/discover?', async (req, res) => {
 		}
 
 		cache.set(cacheKey, response.data);
-		res.status(200).json(response.data);
+		return res.status(200).json(response.data);
 	} catch (error) {
-		res
+		return res
 			.status(500)
 			.json({ error: `Error fetching search results for ${queryString}` });
 	}

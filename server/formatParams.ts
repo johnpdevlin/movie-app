@@ -5,6 +5,8 @@ export type RequestParam =
 	| 'include_video'
 	| 'include_adult'
 	| 'primary_release_year'
+	| 'primary_release_date_lte'
+	| 'primary_release_date_gte'
 	| 'page'
 	| 'sort_by'
 	| 'vote_average_gte'
@@ -28,10 +30,7 @@ export type RequestParams = {
 };
 
 export function formatQueryParam(param: string, value: string): string {
-	if (param.endsWith('_lte')) {
-		param = param.replace('_lte', '.lte');
-	} else if (param.endsWith('_gte')) {
-		param = param.replace('_gte', '.gte');
-	}
+	// Replace underscores (_) with periods (.) for "lte" and "gte" conditions
+	param = param.replace('_lte', '.lte').replace('_gte', '.gte');
 	return `${param}=${value}`;
 }
