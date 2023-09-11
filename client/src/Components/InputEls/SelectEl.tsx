@@ -4,8 +4,8 @@ import Box from '@mui/material/Box';
 import { InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
 type BasicSelectProps = {
-	selectedValue: number;
-	setSelectedValue: React.Dispatch<React.SetStateAction<number>>;
+	selectedValue: number | string | null;
+	setSelectedValue: React.Dispatch<React.SetStateAction<number | null>>;
 	label: string;
 	options: { label?: string; value: string | number }[];
 };

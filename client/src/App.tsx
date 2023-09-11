@@ -29,7 +29,6 @@ function App() {
 					searchTerm || searchParams
 				}&page=${page}`;
 
-				console.log(query);
 				axios
 					.get(
 						`https://us-central1-movie-app-server-222.cloudfunctions.net/api/${query}`

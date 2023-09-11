@@ -1,5 +1,4 @@
 /** @format */
-
 export type language = string;
 export type include_video = boolean;
 export type include_adult = boolean;
@@ -31,27 +30,33 @@ export type with_original_language = string;
 export type without_genres = string;
 export type with_release_type = string;
 export type year = number;
+export type primary_release_year = number;
+export type primary_release_date_lte = string;
+export type primary_release_date_gte = string;
 
-export type request_param =
-	| language
-	| include_video
-	| include_adult
-	| primary_release_year
-	| page
-	| sort_by
-	| vote_average_gte
-	| vote_average_lte
-	| vote_count_gte
-	| vote_count_lte
-	| with_cast
-	| with_crew
-	| with_genres
-	| with_keywords
-	| with_people
-	| with_runtime_gte
-	| with_runtime_lte
-	| with_original_language
-	| without_genres
-	| with_release_type
-	| year;
+// Should match model in server
+export type RequestParam =
+	| 'language'
+	| 'include_video'
+	| 'include_adult'
+	| 'primary_release_year'
+	| 'primary_release_date_lte'
+	| 'primary_release_date_gte'
+	| 'page'
+	| 'sort_by'
+	| 'vote_average_gte'
+	| 'vote_average_lte'
+	| 'vote_count_gte'
+	| 'vote_count_lte'
+	| 'with_cast'
+	| 'with_crew'
+	| 'with_genres'
+	| 'with_keywords'
+	| 'with_people'
+	| 'with_runtime_gte'
+	| 'with_runtime_lte'
+	| 'with_original_language'
+	| 'without_genres'
+	| 'with_release_type'
+	| 'year';
 export type request_params = request_param[];

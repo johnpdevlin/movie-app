@@ -2,15 +2,7 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import SelectEl from '../InputEls/SelectEl';
-import {
-	Alert,
-	Box,
-	Button,
-	Grid,
-	Rating,
-	Stack,
-	Typography,
-} from '@mui/material';
+import { Box, Button, Grid, Rating, Stack, Typography } from '@mui/material';
 import MultiSelectEl from '../InputEls/MultiSelectEl';
 import RangeSlider from '../InputEls/RangeSlider';
 import { Check } from '@mui/icons-material';
@@ -31,9 +23,10 @@ function DiscoverPage(props: DisoverPageProps) {
 		{ length: new Date().getFullYear() - 1880 + 1 },
 		(_, index) => 1880 + index
 	).reverse();
-	const [selectedYear, setSelectedYear] = useState<number>(
-		new Date().getFullYear() as number
-	);
+	const yearRange: [number, number] = [1880, new Date().getFullYear()];
+	const [selectedYearRange, setSelectedYearRange] =
+		useState<[number, number]>(yearRange);
+	const [selectedYear, setSelectedYear] = useState<number | null>(null);
 	const [availableGenres, setAvailableGenres] = useState<
 		{ name: string; value: number }[]
 	>([]);
@@ -47,6 +40,8 @@ function DiscoverPage(props: DisoverPageProps) {
 	const handleSubmit = () => {
 		const params = [
 			selectedYear,
+			selectedYearRange[0],
+			selectedYearRange[1],
 			genres.map((g) => g.value).join(','),
 			selectedRuntimeRange[0],
 			selectedRuntimeRange[1],
@@ -59,6 +54,8 @@ function DiscoverPage(props: DisoverPageProps) {
 				if (typeof value === 'string' || typeof value === 'number') {
 					const variableName = [
 						'primary_release_year',
+						'primary_release_date_gte',
+						'primary_release_date_lte',
 						'with_genres',
 						'with_runtime_gte',
 						'with_runtime_lte',
@@ -92,11 +89,6 @@ function DiscoverPage(props: DisoverPageProps) {
 	return (
 		<>
 			<Grid container>
-				<Box width={'100%'}>
-					<Alert severity='warning'>
-						This page is still under construction!
-					</Alert>
-				</Box>
 				<Grid item xs={5} sm={4} md={2.5} lg={2}>
 					<Box m={2} mt={6}>
 						<Stack spacing={3}>
@@ -109,7 +101,15 @@ function DiscoverPage(props: DisoverPageProps) {
 									>
 								}
 							/>
-
+							<Box>
+								<Typography gutterBottom>Year Range:</Typography>
+								<RangeSlider
+									label={'Year Range'}
+									type={'year'}
+									range={selectedYearRange}
+									setRange={setSelectedYearRange}
+								/>
+							</Box>
 							<SelectEl
 								label={'Release Year'}
 								options={years.map((y) => {
