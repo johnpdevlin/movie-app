@@ -93,7 +93,7 @@ function App() {
 									)
 								}
 							/>
-							<Route path='/:id' element={<MoviePage />} />
+							<Route path='/movie/:id' element={<MoviePage />} />
 							<Route path='/favorites' element={<FavoritesPage />} />
 							<Route path='/saved' element={<SavedPage />} />
 							<Route

@@ -80,7 +80,7 @@ const CompactOverlayImage = (props: {
 
 	return (
 		<Box style={containerStyle}>
-			<Link to={`/${props.id}/`}>
+			<Link to={`/movie/${props.id}/`}>
 				<img
 					src={`https://image.tmdb.org/t/p/w300/${props.image}`}
 					style={imgStyle}
