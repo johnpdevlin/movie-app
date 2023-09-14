@@ -13,7 +13,7 @@ Before you can run the Movie App (Client) application, make sure you have the fo
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone <repository-url>
+   git clone <johnpdevlin/movie-app>
    ```
 
 2. Change to the client directory:
